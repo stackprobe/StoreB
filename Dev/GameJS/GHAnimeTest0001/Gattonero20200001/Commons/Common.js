@@ -2,7 +2,7 @@
 	ã§í ÅEÇªÇÃëº
 */
 
-function <Func boolean> Supplier(<generatorForTask> task)
+function <Func boolean OR T> Supplier(<generatorForTask OR T[]> task)
 {
 	var ret = function <Func boolean> ()
 	{

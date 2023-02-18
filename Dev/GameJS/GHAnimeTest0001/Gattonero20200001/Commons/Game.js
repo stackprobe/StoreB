@@ -318,3 +318,14 @@ function <D2Point_t> GetXYSpeed(<int> direction, <double> speed)
 	}
 	return ret;
 }
+
+/*
+	(0, 0), (0.5, 1), (1, 0) ‚ğ’Ê‚é•ú•¨ü
+
+	x:   X²‚Ì’l
+	ret: Y²‚Ì’l
+*/
+function <double> Parabola(<double> x)
+{
+	return (x - x * x) * 4.0;
+}
