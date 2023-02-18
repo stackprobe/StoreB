@@ -26,5 +26,10 @@ window.onload = function()
 <center>
 <div id="Gattonero20200001-CanvasBox"></div>
 </center>
+
+<hr/>
+
+画面をクリックすると次のアクションへ進みます。<br/>
+
 </body>
 </html>
