@@ -232,11 +232,25 @@ namespace Charlotte.Tests
 			return dest.ToArray();
 		}
 
-		private SummaryInfo[] Test01_e(IEnumerable<RecordInfo> records)
+		private SummaryInfo[] Test01_e(IList<RecordInfo> records)
 		{
 			List<SummaryInfo> dest = new List<SummaryInfo>();
 			SummaryInfo summary = null;
 			int count = 0;
+
+			Action<RecordInfo> startGroup = record =>
+			{
+				summary = new SummaryInfo()
+				{
+					Group = record.Group,
+					Total = 0,
+					Low = int.MaxValue,
+					Hi = int.MinValue,
+					//Avg = -1,
+				};
+
+				count = 0;
+			};
 
 			Action endGroup = () =>
 			{
@@ -245,34 +259,26 @@ namespace Charlotte.Tests
 				dest.Add(summary);
 			};
 
-			foreach (RecordInfo record in records)
+			if (1 <= records.Count)
 			{
-				if (summary != null && summary.Group != record.Group)
+				startGroup(records[0]);
+
+				foreach (RecordInfo record in records)
 				{
-					endGroup();
-					summary = null;
-				}
-				if (summary == null)
-				{
-					summary = new SummaryInfo()
+					if (summary.Group != record.Group)
 					{
-						Group = record.Group,
-						Total = 0,
-						Low = int.MaxValue,
-						Hi = int.MinValue,
-						//Avg = -1,
-					};
+						endGroup();
+						startGroup(record);
+					}
 
-					count = 0;
+					summary.Total += record.Value;
+					summary.Low = Math.Min(summary.Low, record.Value);
+					summary.Hi = Math.Max(summary.Hi, record.Value);
+
+					count++;
 				}
-				summary.Total += record.Value;
-				summary.Low = Math.Min(summary.Low, record.Value);
-				summary.Hi = Math.Max(summary.Hi, record.Value);
-
-				count++;
-			}
-			if (summary != null)
 				endGroup();
+			}
 
 			return dest.ToArray();
 		}
