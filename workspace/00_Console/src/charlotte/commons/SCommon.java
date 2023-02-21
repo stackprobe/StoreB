@@ -1,7 +1,11 @@
 package charlotte.commons;
 
+import java.io.File;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.function.Consumer;
 
 /**
  * 共通機能・便利機能はできるだけこのクラスに集約する。
@@ -10,9 +14,27 @@ import java.util.List;
  */
 public class SCommon {
 
-	// TODO
-	// TODO
-	// TODO
+	public static void searchDirectory(File targetDirectory, boolean allDirectories, Consumer<File> reaction) {
+		if (!targetDirectory.isDirectory()) {
+			throw new Error();
+		}
+
+		Queue<File> q = new ArrayDeque<File>();
+		q.add(targetDirectory);
+
+		while (!q.isEmpty()) {
+			File[] fs = q.poll().listFiles();
+			//Arrays.sort(fs, (a, b) -> a.compareTo(b));
+
+			for (File f : fs) {
+				reaction.accept(f);
+
+				if (allDirectories && f.isDirectory()) {
+					q.add(f);
+				}
+			}
+		}
+	}
 
 	// PRIMITIVE[] -> List<PRIMITIVE> ここから
 
@@ -92,7 +114,7 @@ public class SCommon {
 
 	// List<PRIMITIVE> -> PRIMITIVE[] ここから
 
-	public static boolean[] toBooleanArray(List<Boolean> list) {
+	public static boolean[] toPrimitiveBooleanArray(List<Boolean> list) {
 		boolean[] arr = new boolean[list.size()];
 
 		for (int index = 0; index < list.size(); index++) {
@@ -101,7 +123,7 @@ public class SCommon {
 		return arr;
 	}
 
-	public static byte[] toByteArray(List<Byte> list) {
+	public static byte[] toPrimitiveByteArray(List<Byte> list) {
 		byte[] arr = new byte[list.size()];
 
 		for (int index = 0; index < list.size(); index++) {
@@ -110,7 +132,7 @@ public class SCommon {
 		return arr;
 	}
 
-	public static char[] toCharArray(List<Character> list) {
+	public static char[] toPrimitiveCharArray(List<Character> list) {
 		char[] arr = new char[list.size()];
 
 		for (int index = 0; index < list.size(); index++) {
@@ -119,7 +141,7 @@ public class SCommon {
 		return arr;
 	}
 
-	public static short[] toShortArray(List<Short> list) {
+	public static short[] toPrimitiveShortArray(List<Short> list) {
 		short[] arr = new short[list.size()];
 
 		for (int index = 0; index < list.size(); index++) {
@@ -128,7 +150,7 @@ public class SCommon {
 		return arr;
 	}
 
-	public static int[] toIntArray(List<Integer> list) {
+	public static int[] toPrimitiveIntArray(List<Integer> list) {
 		int[] arr = new int[list.size()];
 
 		for (int index = 0; index < list.size(); index++) {
@@ -137,7 +159,7 @@ public class SCommon {
 		return arr;
 	}
 
-	public static long[] toLongArray(List<Long> list) {
+	public static long[] toPrimitiveLongArray(List<Long> list) {
 		long[] arr = new long[list.size()];
 
 		for (int index = 0; index < list.size(); index++) {
@@ -146,7 +168,7 @@ public class SCommon {
 		return arr;
 	}
 
-	public static float[] toFloatArray(List<Float> list) {
+	public static float[] toPrimitiveFloatArray(List<Float> list) {
 		float[] arr = new float[list.size()];
 
 		for (int index = 0; index < list.size(); index++) {
@@ -155,7 +177,7 @@ public class SCommon {
 		return arr;
 	}
 
-	public static double[] toDoubleArray(List<Double> list) {
+	public static double[] toPrimitiveDoubleArray(List<Double> list) {
 		double[] arr = new double[list.size()];
 
 		for (int index = 0; index < list.size(); index++) {
