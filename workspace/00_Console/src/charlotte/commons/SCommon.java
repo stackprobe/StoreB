@@ -14,6 +14,12 @@ import java.util.function.Consumer;
  */
 public class SCommon {
 
+	/**
+	 * ディレクトリ内のディレクトリとファイルを検索する。
+	 * @param targetDirectory 対象ディレクトリ
+	 * @param allDirectories 配下のディレクトリ内も検索するか
+	 * @param reaction 発見したディレクトリとファイルに対するリアクション
+	 */
 	public static void searchDirectory(File targetDirectory, boolean allDirectories, Consumer<File> reaction) {
 		if (!targetDirectory.isDirectory()) {
 			throw new Error();
@@ -23,10 +29,7 @@ public class SCommon {
 		q.add(targetDirectory);
 
 		while (!q.isEmpty()) {
-			File[] fs = q.poll().listFiles();
-			//Arrays.sort(fs, (a, b) -> a.compareTo(b));
-
-			for (File f : fs) {
+			for (File f : q.poll().listFiles()) {
 				reaction.accept(f);
 
 				if (allDirectories && f.isDirectory()) {
