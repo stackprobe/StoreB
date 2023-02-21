@@ -92,6 +92,7 @@ namespace Charlotte.Tests
 			SummaryInfo[] summaries2 = Test01_c(records);
 			SummaryInfo[] summaries3 = Test01_d(records);
 			SummaryInfo[] summaries4 = Test01_e(records);
+			SummaryInfo[] summaries5 = Test01_f(records);
 
 			if (SCommon.Comp(summaries1, summaries2, (a, b) => SummaryInfo.Comp(a, b)) != 0)
 				throw null; // ng !!!
@@ -100,6 +101,9 @@ namespace Charlotte.Tests
 				throw null; // ng !!!
 
 			if (SCommon.Comp(summaries1, summaries4, (a, b) => SummaryInfo.Comp(a, b)) != 0)
+				throw null; // ng !!!
+
+			if (SCommon.Comp(summaries1, summaries5, (a, b) => SummaryInfo.Comp(a, b)) != 0)
 				throw null; // ng !!!
 		}
 
@@ -276,6 +280,64 @@ namespace Charlotte.Tests
 					summary.Hi = Math.Max(summary.Hi, record.Value);
 
 					count++;
+				}
+				endGroup();
+			}
+
+			return dest.ToArray();
+		}
+
+		private SummaryInfo[] Test01_f(IList<RecordInfo> records)
+		{
+			List<SummaryInfo> dest = new List<SummaryInfo>();
+			SummaryInfo summary = null;
+			int count = 0;
+
+			Action<RecordInfo> firstGroupRecord = record =>
+			{
+				summary = new SummaryInfo()
+				{
+					Group = record.Group,
+					Total = record.Value,
+					Low = record.Value,
+					Hi = record.Value,
+					//Avg = -1,
+				};
+
+				count = 1;
+			};
+
+			Action<RecordInfo> trailGroupRecord = record =>
+			{
+				summary.Total += record.Value;
+				summary.Low = Math.Min(summary.Low, record.Value);
+				summary.Hi = Math.Max(summary.Hi, record.Value);
+
+				count++;
+			};
+
+			Action endGroup = () =>
+			{
+				summary.Avg = summary.Total / count;
+
+				dest.Add(summary);
+			};
+
+			if (1 <= records.Count)
+			{
+				firstGroupRecord(records[0]);
+
+				foreach (RecordInfo record in records.Skip(1))
+				{
+					if (summary.Group != record.Group) // ? group changed
+					{
+						endGroup();
+						firstGroupRecord(record);
+					}
+					else
+					{
+						trailGroupRecord(record);
+					}
 				}
 				endGroup();
 			}
