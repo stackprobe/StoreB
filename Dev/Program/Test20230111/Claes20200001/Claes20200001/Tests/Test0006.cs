@@ -91,11 +91,15 @@ namespace Charlotte.Tests
 			SummaryInfo[] summaries1 = Test01_b(records);
 			SummaryInfo[] summaries2 = Test01_c(records);
 			SummaryInfo[] summaries3 = Test01_d(records);
+			SummaryInfo[] summaries4 = Test01_e(records);
 
 			if (SCommon.Comp(summaries1, summaries2, (a, b) => SummaryInfo.Comp(a, b)) != 0)
 				throw null; // ng !!!
 
 			if (SCommon.Comp(summaries1, summaries3, (a, b) => SummaryInfo.Comp(a, b)) != 0)
+				throw null; // ng !!!
+
+			if (SCommon.Comp(summaries1, summaries4, (a, b) => SummaryInfo.Comp(a, b)) != 0)
 				throw null; // ng !!!
 		}
 
@@ -161,8 +165,8 @@ namespace Charlotte.Tests
 					{
 						Group = record.Group,
 						Total = 0,
-						Low = record.Value,
-						Hi = record.Value,
+						Low = int.MaxValue,
+						Hi = int.MinValue,
 						//Avg = -1,
 					};
 
@@ -208,8 +212,8 @@ namespace Charlotte.Tests
 					{
 						Group = reader.Current.Group,
 						Total = 0,
-						Low = reader.Current.Value,
-						Hi = reader.Current.Value,
+						Low = int.MaxValue,
+						Hi = int.MinValue,
 						//Avg = -1,
 					};
 
@@ -224,6 +228,51 @@ namespace Charlotte.Tests
 			}
 
 			reader.Dispose();
+
+			return dest.ToArray();
+		}
+
+		private SummaryInfo[] Test01_e(IEnumerable<RecordInfo> records)
+		{
+			List<SummaryInfo> dest = new List<SummaryInfo>();
+			SummaryInfo summary = null;
+			int count = 0;
+
+			Action endGroup = () =>
+			{
+				summary.Avg = summary.Total / count;
+
+				dest.Add(summary);
+			};
+
+			foreach (RecordInfo record in records)
+			{
+				if (summary != null && summary.Group != record.Group)
+				{
+					endGroup();
+					summary = null;
+				}
+				if (summary == null)
+				{
+					summary = new SummaryInfo()
+					{
+						Group = record.Group,
+						Total = 0,
+						Low = int.MaxValue,
+						Hi = int.MinValue,
+						//Avg = -1,
+					};
+
+					count = 0;
+				}
+				summary.Total += record.Value;
+				summary.Low = Math.Min(summary.Low, record.Value);
+				summary.Hi = Math.Max(summary.Hi, record.Value);
+
+				count++;
+			}
+			if (summary != null)
+				endGroup();
 
 			return dest.ToArray();
 		}
