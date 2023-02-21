@@ -90,8 +90,12 @@ namespace Charlotte.Tests
 
 			SummaryInfo[] summaries1 = Test01_b(records);
 			SummaryInfo[] summaries2 = Test01_c(records);
+			SummaryInfo[] summaries3 = Test01_d(records);
 
 			if (SCommon.Comp(summaries1, summaries2, (a, b) => SummaryInfo.Comp(a, b)) != 0)
+				throw null; // ng !!!
+
+			if (SCommon.Comp(summaries1, summaries3, (a, b) => SummaryInfo.Comp(a, b)) != 0)
 				throw null; // ng !!!
 		}
 
@@ -170,6 +174,57 @@ namespace Charlotte.Tests
 
 				count++;
 			}
+			return dest.ToArray();
+		}
+
+		private SummaryInfo[] Test01_d(IEnumerable<RecordInfo> records)
+		{
+			IEnumerator<RecordInfo> reader = records.GetEnumerator();
+			List<SummaryInfo> dest = new List<SummaryInfo>();
+			SummaryInfo summary = null;
+			int count = 0;
+
+			for (; ; )
+			{
+				bool hasCurr = reader.MoveNext();
+
+				// グループ終了時の処理
+				if (summary != null && (!hasCurr || reader.Current.Group != summary.Group))
+				{
+					summary.Avg = summary.Total / count;
+
+					dest.Add(summary);
+
+					summary = null;
+				}
+
+				// グループ開始時の処理
+				if (summary == null)
+				{
+					if (!hasCurr)
+						break;
+
+					summary = new SummaryInfo()
+					{
+						Group = reader.Current.Group,
+						Total = 0,
+						Low = reader.Current.Value,
+						Hi = reader.Current.Value,
+						//Avg = -1,
+					};
+
+					count = 0;
+				}
+
+				summary.Total += reader.Current.Value;
+				summary.Low = Math.Min(summary.Low, reader.Current.Value);
+				summary.Hi = Math.Max(summary.Hi, reader.Current.Value);
+
+				count++;
+			}
+
+			reader.Dispose();
+
 			return dest.ToArray();
 		}
 	}
