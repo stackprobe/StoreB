@@ -1,6 +1,7 @@
 package charlotte.commons;
 
 import java.io.File;
+import java.security.SecureRandom;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,20 @@ import java.util.function.Consumer;
  *
  */
 public class SCommon {
+
+	public static RandomUnit cryptRandom = new RandomUnit(new SecureRandom());
+
+	/**
+	 * ディレクトリ内のディレクトリとファイルを検索する。
+	 * @param targetDirectory 対象ディレクトリ
+	 * @param allDirectories 配下のディレクトリ内も検索するか
+	 * @return 発見したディレクトリとファイルの配列
+	 */
+	public static List<File> getFiles(File targetDirectory, boolean allDirectories) {
+		final List<File> dest = new ArrayList<File>();
+		searchDirectory(targetDirectory, allDirectories, f -> dest.add(f));
+		return dest;
+	}
 
 	/**
 	 * ディレクトリ内のディレクトリとファイルを検索する。
