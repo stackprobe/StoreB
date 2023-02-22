@@ -47,7 +47,7 @@ namespace Charlotte.Tests
 
 		public void Test01()
 		{
-			Test01_a(1, 1, 1); // 長さゼロ
+			Test01_a(0, 0, 0); // 長さゼロ
 
 			foreach (int a in new int[] { 10, 30, 100, 300 })
 			{
@@ -70,11 +70,9 @@ namespace Charlotte.Tests
 
 		private void Test01_a(int countScale, int groupScale, int valueScale)
 		{
-			int count = SCommon.CRandom.GetInt(countScale);
-			int groupMin = 1;
-			int groupMax = SCommon.CRandom.GetInt(groupScale) + 1;
-			int valueMin = 1;
-			int valueMax = SCommon.CRandom.GetInt(valueScale) + 1;
+			int count = SCommon.CRandom.GetRange(0, countScale);
+			int groupMax = SCommon.CRandom.GetRange(0, groupScale);
+			int valueMax = SCommon.CRandom.GetRange(0, valueScale);
 
 			List<RecordInfo> records = new List<RecordInfo>();
 
@@ -82,8 +80,8 @@ namespace Charlotte.Tests
 			{
 				records.Add(new RecordInfo()
 				{
-					Group = SCommon.CRandom.GetRange(groupMin, groupMax),
-					Value = SCommon.CRandom.GetRange(valueMin, valueMax),
+					Group = SCommon.CRandom.GetRange(0, groupMax),
+					Value = SCommon.CRandom.GetRange(0, valueMax),
 				});
 			}
 			records.Sort((a, b) => a.Group - b.Group);
