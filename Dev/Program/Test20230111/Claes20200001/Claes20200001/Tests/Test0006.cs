@@ -93,6 +93,8 @@ namespace Charlotte.Tests
 			SummaryInfo[] summaries5 = Test01_f(records);
 			SummaryInfo[] summaries6 = Test01_g(records);
 			SummaryInfo[] summaries7 = Test01_h(records);
+			SummaryInfo[] summaries8 = Test01_i(records);
+			SummaryInfo[] summaries9 = Test01_j(records);
 
 			if (SCommon.Comp(summaries1, summaries2, (a, b) => SummaryInfo.Comp(a, b)) != 0)
 				throw null; // ng !!!
@@ -110,6 +112,12 @@ namespace Charlotte.Tests
 				throw null; // ng !!!
 
 			if (SCommon.Comp(summaries1, summaries7, (a, b) => SummaryInfo.Comp(a, b)) != 0)
+				throw null; // ng !!!
+
+			if (SCommon.Comp(summaries1, summaries8, (a, b) => SummaryInfo.Comp(a, b)) != 0)
+				throw null; // ng !!!
+
+			if (SCommon.Comp(summaries1, summaries9, (a, b) => SummaryInfo.Comp(a, b)) != 0)
 				throw null; // ng !!!
 		}
 
@@ -408,6 +416,77 @@ namespace Charlotte.Tests
 					summary.Total += records[index].Value;
 					summary.Low = Math.Min(summary.Low, records[index].Value);
 					summary.Hi = Math.Max(summary.Hi, records[index].Value);
+
+					count++;
+				}
+				summary.Avg = summary.Total / count;
+
+				dest.Add(summary);
+			}
+			return dest.ToArray();
+		}
+
+		private SummaryInfo[] Test01_i(IEnumerable<RecordInfo> records)
+		{
+			IEnumerator<RecordInfo> reader = records.GetEnumerator();
+			bool hasCurr = reader.MoveNext();
+			List<SummaryInfo> dest = new List<SummaryInfo>();
+
+			while (hasCurr)
+			{
+				SummaryInfo summary = new SummaryInfo()
+				{
+					Group = reader.Current.Group,
+					Total = 0,
+					Low = int.MaxValue,
+					Hi = int.MinValue,
+					//Avg = -1,
+				};
+
+				int count = 0;
+
+				for (; hasCurr && summary.Group == reader.Current.Group; hasCurr = reader.MoveNext())
+				{
+					summary.Total += reader.Current.Value;
+					summary.Low = Math.Min(summary.Low, reader.Current.Value);
+					summary.Hi = Math.Max(summary.Hi, reader.Current.Value);
+
+					count++;
+				}
+				summary.Avg = summary.Total / count;
+
+				dest.Add(summary);
+			}
+			return dest.ToArray();
+		}
+
+		private SummaryInfo[] Test01_j(IEnumerable<RecordInfo> records)
+		{
+			IEnumerator<RecordInfo> reader = records.GetEnumerator();
+			bool hasCurr = reader.MoveNext();
+			List<SummaryInfo> dest = new List<SummaryInfo>();
+
+			while (hasCurr)
+			{
+				SummaryInfo summary = new SummaryInfo()
+				{
+					Group = reader.Current.Group,
+					Total = reader.Current.Value,
+					Low = reader.Current.Value,
+					Hi = reader.Current.Value,
+					//Avg = -1,
+				};
+
+				int count = 1;
+
+				while (hasCurr = reader.MoveNext())
+				{
+					if (summary.Group != reader.Current.Group) // ? group changed
+						break;
+
+					summary.Total += reader.Current.Value;
+					summary.Low = Math.Min(summary.Low, reader.Current.Value);
+					summary.Hi = Math.Max(summary.Hi, reader.Current.Value);
 
 					count++;
 				}
