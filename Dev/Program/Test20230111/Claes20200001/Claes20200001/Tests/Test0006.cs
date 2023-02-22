@@ -93,6 +93,8 @@ namespace Charlotte.Tests
 			SummaryInfo[] summaries3 = Test01_d(records);
 			SummaryInfo[] summaries4 = Test01_e(records);
 			SummaryInfo[] summaries5 = Test01_f(records);
+			SummaryInfo[] summaries6 = Test01_g(records);
+			SummaryInfo[] summaries7 = Test01_h(records);
 
 			if (SCommon.Comp(summaries1, summaries2, (a, b) => SummaryInfo.Comp(a, b)) != 0)
 				throw null; // ng !!!
@@ -104,6 +106,12 @@ namespace Charlotte.Tests
 				throw null; // ng !!!
 
 			if (SCommon.Comp(summaries1, summaries5, (a, b) => SummaryInfo.Comp(a, b)) != 0)
+				throw null; // ng !!!
+
+			if (SCommon.Comp(summaries1, summaries6, (a, b) => SummaryInfo.Comp(a, b)) != 0)
+				throw null; // ng !!!
+
+			if (SCommon.Comp(summaries1, summaries7, (a, b) => SummaryInfo.Comp(a, b)) != 0)
 				throw null; // ng !!!
 		}
 
@@ -342,6 +350,73 @@ namespace Charlotte.Tests
 				endGroup();
 			}
 
+			return dest.ToArray();
+		}
+
+		private SummaryInfo[] Test01_g(IList<RecordInfo> records)
+		{
+			List<SummaryInfo> dest = new List<SummaryInfo>();
+
+			for (int index = 0; index < records.Count; )
+			{
+				SummaryInfo summary = new SummaryInfo()
+				{
+					Group = records[index].Group,
+					Total = 0,
+					Low = int.MaxValue,
+					Hi = int.MinValue,
+					//Avg = -1,
+				};
+
+				int count = 0;
+
+				for (; index < records.Count && summary.Group == records[index].Group; index++)
+				{
+					summary.Total += records[index].Value;
+					summary.Low = Math.Min(summary.Low, records[index].Value);
+					summary.Hi = Math.Max(summary.Hi, records[index].Value);
+
+					count++;
+				}
+				summary.Avg = summary.Total / count;
+
+				dest.Add(summary);
+			}
+			return dest.ToArray();
+		}
+
+		private SummaryInfo[] Test01_h(IList<RecordInfo> records)
+		{
+			List<SummaryInfo> dest = new List<SummaryInfo>();
+
+			for (int index = 0; index < records.Count; )
+			{
+				SummaryInfo summary = new SummaryInfo()
+				{
+					Group = records[index].Group,
+					Total = records[index].Value,
+					Low = records[index].Value,
+					Hi = records[index].Value,
+					//Avg = -1,
+				};
+
+				int count = 1;
+
+				while (++index < records.Count)
+				{
+					if (summary.Group != records[index].Group) // ? group changed
+						break;
+
+					summary.Total += records[index].Value;
+					summary.Low = Math.Min(summary.Low, records[index].Value);
+					summary.Hi = Math.Max(summary.Hi, records[index].Value);
+
+					count++;
+				}
+				summary.Avg = summary.Total / count;
+
+				dest.Add(summary);
+			}
 			return dest.ToArray();
 		}
 	}
