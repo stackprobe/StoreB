@@ -67,6 +67,52 @@ public class RandomUnit {
 		return getInt(maxval - minval + 1) + minval;
 	}
 
+	/**
+	 * 真偽値を返す。
+	 * @return 真偽値
+	 */
+	public boolean getBoolean() {
+		return getInt(2) == 1;
+	}
+
+	/**
+	 * -1 または 1 をランダムに返す。
+	 * @return -1 または 1
+	 */
+	public int getSign() {
+		return getInt(2) * 2 - 1;
+	}
+
+	/**
+	 * 0.0 ～ 1.0 の乱数を返す。
+	 * @return 乱数
+	 */
+	public double getReal1() {
+		return (double)getPositiveInt() / Integer.MAX_VALUE;
+	}
+
+	/**
+	 * -1.0 ～ 1.0 の乱数を返す。
+	 * @return 乱数
+	 */
+	public double getReal2() {
+		return getReal1() * 2.0 - 1.0;
+	}
+
+	/**
+	 * minval ～ maxval の乱数を返す。
+	 * @param minval 最小値
+	 * @param maxval 最大値
+	 * @return 乱数
+	 */
+	public double getReal3(double minval, double maxval) {
+		return getReal1() * (maxval - minval) + minval;
+	}
+
+	public <T> T chooseOne(List<T> list) {
+		return list.get(getInt(list.size()));
+	}
+
 	public <T> void shuffle(List<T> list) {
 		for (int index = list.size(); 1 < index; index--) {
 			SCommon.swap(list, getInt(index), index - 1);

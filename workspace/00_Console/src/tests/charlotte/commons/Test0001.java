@@ -36,7 +36,10 @@ public class Test0001 {
 	private void test03() {
 		for (int c = 0; c < 1000; c++) {
 			//System.out.println(SCommon.cryptRandom.getLong());
-			System.out.println(SCommon.cryptRandom.getPositiveLong());
+			//System.out.println(SCommon.cryptRandom.getPositiveLong());
+			//System.out.println(SCommon.cryptRandom.getReal1());
+			//System.out.println(SCommon.cryptRandom.getReal2());
+			System.out.println(SCommon.cryptRandom.getReal3(-300.0, 700.0));
 		}
 	}
 }
