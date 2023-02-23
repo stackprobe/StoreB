@@ -15,6 +15,12 @@ import java.util.function.Consumer;
  */
 public class SCommon {
 
+	public static <T> void swap(List<T> list, int a, int b) {
+		T tmp = list.get(a);
+		list.set(a, list.get(b));
+		list.set(b, tmp);
+	}
+
 	public static RandomUnit cryptRandom = new RandomUnit(new SecureRandom());
 
 	/**

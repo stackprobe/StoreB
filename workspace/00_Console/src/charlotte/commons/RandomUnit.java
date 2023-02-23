@@ -1,5 +1,6 @@
 package charlotte.commons;
 
+import java.util.List;
 import java.util.Random;
 
 public class RandomUnit {
@@ -60,5 +61,11 @@ public class RandomUnit {
 
 	public int getRange(int minval, int maxval) {
 		return getInt(maxval - minval + 1) + minval;
+	}
+
+	public <T> void shuffle(List<T> list) {
+		for (int index = list.size(); 1 < index; index--) {
+			SCommon.swap(list, getInt(index), index - 1);
+		}
 	}
 }
