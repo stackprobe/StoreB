@@ -60,7 +60,9 @@ public class SCommon {
 		}
 	}
 
-	// PRIMITIVE[] -> List<PRIMITIVE> ここから
+	// ****
+	// **** PRIMITIVE[] -> List<PRIMITIVE> ここから
+	// ****
 
 	public static List<Boolean> toList(boolean[] arr) {
 		List<Boolean> list = new ArrayList<Boolean>(arr.length);
@@ -134,9 +136,13 @@ public class SCommon {
 		return list;
 	}
 
-	// PRIMITIVE[] -> List<PRIMITIVE> ここまで
+	// ****
+	// **** PRIMITIVE[] -> List<PRIMITIVE> ここまで
+	// ****
 
-	// List<PRIMITIVE> -> PRIMITIVE[] ここから
+	// ****
+	// **** List<PRIMITIVE> -> PRIMITIVE[] ここから
+	// ****
 
 	public static boolean[] toPrimitiveBooleanArray(List<Boolean> list) {
 		boolean[] arr = new boolean[list.size()];
@@ -210,5 +216,7 @@ public class SCommon {
 		return arr;
 	}
 
-	// List<PRIMITIVE> -> PRIMITIVE[] ここまで
+	// ****
+	// **** List<PRIMITIVE> -> PRIMITIVE[] ここまで
+	// ****
 }

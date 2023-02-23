@@ -34,6 +34,10 @@ public class RandomUnit {
 		return returnValue;
 	}
 
+	public int getPositiveInt() {
+		return getInt() & 0x7fffffff;
+	}
+
 	public long getLong() {
 		byte[] data = getBytes(8);
 		long returnValue =

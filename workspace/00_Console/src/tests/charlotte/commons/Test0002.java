@@ -21,6 +21,8 @@ public class Test0002 {
 	private void test01() {
 		createDb();
 
+		// ----
+
 		//int[] memNoList = IntStream.range(0, 100).toArray();
 		String[] memNoList = IntStream.range(0, 100).mapToObj(v -> String.format("%02d", v)).toArray(String[]::new);
 
