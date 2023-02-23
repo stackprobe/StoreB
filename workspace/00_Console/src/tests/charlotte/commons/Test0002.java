@@ -54,7 +54,7 @@ public class Test0002 {
 				int memNo = t * 10 + u;
 
 				for (int level = 0; level < 100; level++) {
-					if (SCommon.cryptRandom.getInt(2) == 0) {
+					if (SCommon.cryptRandom.getInt(30) == 0) {
 						ContInf contInf = new ContInf();
 						contInf.memNo = memNo;
 						contInf.level = level;
