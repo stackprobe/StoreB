@@ -9,7 +9,8 @@ public class Test0001 {
 	public static void main(String[] args) {
 		try {
 			//new Test0001().test01();
-			new Test0001().test02();
+			//new Test0001().test02();
+			new Test0001().test03();
 		}
 		catch (Throwable e) {
 			e.printStackTrace();
@@ -29,6 +30,13 @@ public class Test0001 {
 		}
 		for (File d : SCommon.getFiles(new File("C:/temp"), true).stream().filter(f -> f.isDirectory()).collect(Collectors.toList())) {
 			System.out.println("directory: " + d);
+		}
+	}
+
+	private void test03() {
+		for (int c = 0; c < 1000; c++) {
+			//System.out.println(SCommon.cryptRandom.getLong());
+			System.out.println(SCommon.cryptRandom.getPositiveLong());
 		}
 	}
 }
