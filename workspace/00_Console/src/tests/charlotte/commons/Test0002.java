@@ -1,7 +1,10 @@
 package tests.charlotte.commons;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import charlotte.commons.SCommon;
 
@@ -18,11 +21,67 @@ public class Test0002 {
 	private void test01() {
 		createDb();
 
-		// TODO
-		// TODO
-		// TODO
+		//int[] memNoList = IntStream.range(0, 100).toArray();
+		String[] memNoList = IntStream.range(0, 100).mapToObj(v -> String.format("%02d", v)).toArray(String[]::new);
 
-		System.out.println("*1");
+		SCommon.cryptRandom.shuffle(Arrays.asList(memNoList));
+
+		var tableMemNos = new HashMap<String, List<String>>();
+
+		for (String memNo : memNoList) {
+			String table = "" + (Integer.parseInt(memNo) / 10);
+
+			List<String> memNos = tableMemNos.get(table);
+
+			if (memNos == null) {
+				memNos = new ArrayList<String>();
+				tableMemNos.put(table, memNos);
+			}
+			memNos.add(memNo);
+		}
+
+		for (String table : tableMemNos.keySet()) {
+			System.out.println(table + " --->");
+
+			for (String memNo : tableMemNos.get(table)) {
+				System.out.println("\t" + memNo);
+			}
+		}
+
+		// ----
+
+		memNoList = IntStream.range(0, 100)
+				.mapToObj(v -> String.format("%02d", SCommon.cryptRandom.getInt(100))).toArray(String[]::new);
+
+		// -- cout
+		//Stream.of(memNoList).forEach(v -> System.out.println("[xx] " + v));
+		final var f_memNoList = memNoList;
+		IntStream.range(0, memNoList.length).forEach(v -> System.out.println("[" + v + "] " + f_memNoList[v]));
+		// --
+
+		var memNoToDestPositions = new HashMap<String, List<Integer>>();
+
+		for (int index = 0; index < memNoList.length; index++) {
+			String memNo = memNoList[index];
+
+			List<Integer> destPositions = memNoToDestPositions.get(memNo);
+
+			if (destPositions == null) {
+				destPositions = new ArrayList<Integer>();
+				memNoToDestPositions.put(memNo, destPositions);
+			}
+			destPositions.add(index);
+		}
+
+		for (String memNo : memNoToDestPositions.keySet()) {
+			System.out.println(memNo + " --->");
+
+			for (int destPosition : memNoToDestPositions.get(memNo)) {
+				System.out.println("\t" + destPosition);
+			}
+		}
+
+		// ----
 	}
 
 	private class ContInf {
