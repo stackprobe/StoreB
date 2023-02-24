@@ -1,7 +1,9 @@
 package tests.charlotte.commons;
 
 import java.io.File;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import charlotte.commons.SCommon;
 
@@ -10,7 +12,8 @@ public class Test0001 {
 		try {
 			//new Test0001().test01();
 			//new Test0001().test02();
-			new Test0001().test03();
+			//new Test0001().test03();
+			new Test0001().test04();
 		}
 		catch (Throwable e) {
 			e.printStackTrace();
@@ -40,6 +43,15 @@ public class Test0001 {
 			//System.out.println(SCommon.cryptRandom.getReal1());
 			//System.out.println(SCommon.cryptRandom.getReal2());
 			System.out.println(SCommon.cryptRandom.getReal3(-300.0, 700.0));
+		}
+	}
+
+	private void test04() {
+		// list = { "HELLO", "HELLO", "HELLO", "HELLO", "HELLO" }
+		List<String> list = Stream.generate(() -> "HELLO").limit(5).collect(Collectors.toList());
+
+		for (String element : list) {
+			System.out.println(element);
 		}
 	}
 }

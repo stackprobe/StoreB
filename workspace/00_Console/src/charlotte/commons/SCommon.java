@@ -2,8 +2,8 @@ package charlotte.commons;
 
 import java.io.File;
 import java.security.SecureRandom;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
@@ -46,7 +46,7 @@ public class SCommon {
 			throw new Error();
 		}
 
-		Queue<File> q = new ArrayDeque<File>();
+		Queue<File> q = new LinkedList<File>();
 		q.add(targetDirectory);
 
 		while (!q.isEmpty()) {
