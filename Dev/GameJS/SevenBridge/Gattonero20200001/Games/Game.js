@@ -1028,9 +1028,13 @@ function* <generatorForTask> @@_EffectYouWin()
 
 	AddEffect(function* <generatorForTask> ()
 	{
-		for (var<Scene_t> scene of CreateScene(120))
+//		for (var<Scene_t> scene of CreateScene(45))
+//		for (var<Scene_t> scene of CreateScene(120))
+		for (var<Scene_t> scene of CreateScene(180))
 		{
-			var<double> r = scene.RemRate * 200.0;
+//			var<double> r = scene.RemRate * 70.0;
+//			var<double> r = scene.RemRate * 200.0;
+			var<double> r = scene.RemRate * 300.0;
 
 			DrawSlide_X = GetRand2() * r;
 			DrawSlide_Y = GetRand2() * r;
