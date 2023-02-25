@@ -15,6 +15,23 @@ import java.util.function.Consumer;
  */
 public class SCommon {
 
+	public static <T> T unaddElement(List<T> list) {
+		return list.remove(list.size() - 1);
+	}
+
+	public static <T> T fastRemoveElement(List<T> list, int index) {
+		T ret;
+
+		if (index == list.size() - 1) {
+			ret = unaddElement(list);
+		}
+		else {
+			ret = list.get(index);
+			list.set(index, unaddElement(list));
+		}
+		return ret;
+	}
+
 	public static <T> void swap(List<T> list, int a, int b) {
 		T tmp = list.get(a);
 		list.set(a, list.get(b));

@@ -1,8 +1,10 @@
 package tests.charlotte.commons;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import charlotte.commons.SCommon;
@@ -13,7 +15,8 @@ public class Test0001 {
 			//new Test0001().test01();
 			//new Test0001().test02();
 			//new Test0001().test03();
-			new Test0001().test04();
+			//new Test0001().test04();
+			new Test0001().test05();
 		}
 		catch (Throwable e) {
 			e.printStackTrace();
@@ -53,5 +56,17 @@ public class Test0001 {
 		for (String element : list) {
 			System.out.println(element);
 		}
+	}
+
+	private void test05() {
+		List<String> list = IntStream.range(1, 10).mapToObj(v -> String.format("%04d", v)).toList();
+		list = new ArrayList<String>(list); // to mutable
+
+		System.out.println(String.join(", ", list));
+
+		String element = SCommon.fastRemoveElement(list, 4);
+		System.out.println(element);
+
+		System.out.println(String.join(", ", list));
 	}
 }
