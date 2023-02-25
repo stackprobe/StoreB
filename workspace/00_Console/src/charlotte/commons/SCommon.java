@@ -3,6 +3,7 @@ package charlotte.commons;
 import java.io.File;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -14,6 +15,19 @@ import java.util.function.Consumer;
  *
  */
 public class SCommon {
+
+	public static <T> int compare(List<T> a, List<T> b, Comparator<T> comp) {
+		int count = Math.min(a.size(), b.size());
+
+		for (int index = 0; index < count; index++) {
+			int ret = comp.compare(a.get(index), b.get(index));
+
+			if (ret != 0) {
+				return ret;
+			}
+		}
+		return a.size() - b.size();
+	}
 
 	public static <T> T unaddElement(List<T> list) {
 		return list.remove(list.size() - 1);
@@ -236,4 +250,10 @@ public class SCommon {
 	// ****
 	// **** List<PRIMITIVE> -> PRIMITIVE[] ここまで
 	// ****
+
+	public static int toRange(int value, int minval, int maxval) {
+		value = Math.max(value, minval);
+		value = Math.min(value, maxval);
+		return value;
+	}
 }
