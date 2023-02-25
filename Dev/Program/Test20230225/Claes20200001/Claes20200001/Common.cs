@@ -18,17 +18,25 @@ namespace Charlotte
 			int chrCount = fromChrs.Length;
 
 			if (chrCount != toChrs.Length)
-				throw null; // Bad params
+				throw new ArgumentException();
 
-			return new string(str.Select(chr =>
+			StringBuilder buff = new StringBuilder(chrCount);
+
+			foreach (char f_chr in str)
 			{
-				for (int index = 0; index < chrCount; index++)
-					if (chr == fromChrs[index])
-						return toChrs[index];
+				char chr = f_chr;
 
-				return chr;
-			})
-			.ToArray());
+				for (int index = 0; index < chrCount; index++)
+				{
+					if (chr == fromChrs[index])
+					{
+						chr = toChrs[index];
+						break;
+					}
+				}
+				buff.Append(chr);
+			}
+			return buff.ToString();
 		}
 	}
 }
