@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using Charlotte.Commons;
+using Charlotte.Utilities;
 
 namespace Charlotte.Tests
 {
@@ -28,7 +29,7 @@ namespace Charlotte.Tests
 
 		private void CreateCustomers()
 		{
-			const int RECORD_COUNT = 5000000;
+			const int RECORD_COUNT = 1000000;
 
 			string[] FIRST_NAMES =
 				new string[] { "陽菜", "蓮", "蒼空", "結菜", "颯太", "優花", "樹", "心愛", "悠真", "美羽", "太一", "美咲", "大翔", "彩花", "翔太", "千尋", "悠希", "琉花", "大和", "莉子", "翼", "桃子", "颯", "理央", "優希", "悠斗", "瑠菜", "慎太郎", "陽翔", "夏希", "瑞希", "大輝", "萌", "颯人", "愛菜", "智也", "綾音", "遥斗", "彩乃", "健太", "舞", "悠里", "拓海", "朱音", "龍太郎", "杏", "匠", "亜希", "圭太", "由菜", "悠", "海斗", "和馬", "愛梨", "拓真", "沙耶香", "優", "瑛太", "樹里", "翔", "莉緒", "尚輝", "葵", "亮太", "桜子", "雄大", "美和", "隆太", "柚希", "隼人", "恵", "拓也", "美優", "祐介", "奈緒美", "健", "希望", "翔平", "菜々子", "晃平", "未来", "琴音", "直樹", "真琴", "直人", "彩香", "亜衣", "智之", "菜月", "祐輔", "朋美", "瑠璃", "浩太朗", "柚葉", "健司", "由紀", "孝太郎", "慎之介", "鈴音", "祐樹", "愛梨沙", "隆司", "彩花", "俊介", "優奈", "裕斗", "咲良", "健吾", "由佳", "秀和", "菜穂子", "幸平", "心", "祥太", "楓", "大河", "香菜", "慶太", "未来絵", "彰", "楓香", "慶太郎", "彩", "敬太" };
@@ -138,11 +139,46 @@ namespace Charlotte.Tests
 			return address;
 		}
 
+		private const string SAVE_DATA_FILE = @"C:\temp\Customers.csv";
+
 		public void Test01()
 		{
 			CreateCustomers();
 
-			// TODO
+			using (CsvFileWriter writer = new CsvFileWriter(SAVE_DATA_FILE))
+			{
+				foreach (CustomerInfo customer in this.Customers)
+				{
+					writer.WriteCell(customer.CustomerId.ToString());
+					writer.WriteCell(customer.FirstName);
+					writer.WriteCell(customer.LastName);
+					writer.WriteCell(customer.Email);
+					writer.WriteCell(customer.PhoneNumber);
+					writer.WriteCell(customer.Address);
+					writer.WriteCell(customer.PostalCode);
+					writer.EndRow();
+				}
+			}
+
+			this.Customers.Clear();
+
+			using (CsvFileReader reader = new CsvFileReader(SAVE_DATA_FILE))
+			{
+				string[] row = reader.ReadRow();
+				int c = 0;
+
+				CustomerInfo customer = new CustomerInfo();
+
+				customer.CustomerId = int.Parse(row[c++]);
+				customer.FirstName = row[c++];
+				customer.LastName = row[c++];
+				customer.Email = row[c++];
+				customer.PhoneNumber = row[c++];
+				customer.Address = row[c++];
+				customer.PostalCode = row[c++];
+
+				this.Customers.Add(customer);
+			}
 		}
 	}
 }
