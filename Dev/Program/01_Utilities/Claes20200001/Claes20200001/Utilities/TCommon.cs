@@ -10,6 +10,12 @@ namespace Charlotte.Utilities
 	/// </summary>
 	public static class TCommon
 	{
+		/// <summary>
+		/// 文字列中のアスキーコードの文字(0x20～0x7e)を半角から全角に変換する。
+		/// それ以外の文字は変換しない。
+		/// </summary>
+		/// <param name="str">文字列</param>
+		/// <returns>変換後の文字列</returns>
 		public static string ToAsciiFull(string str)
 		{
 			char[] buff = new char[str.Length];
@@ -20,6 +26,12 @@ namespace Charlotte.Utilities
 			return new string(buff);
 		}
 
+		/// <summary>
+		/// 文字列中のアスキーコードの文字(0x20～0x7e)を全角から半角に変換する。
+		/// それ以外の文字は変換しない。
+		/// </summary>
+		/// <param name="str">文字列</param>
+		/// <returns>変換後の文字列</returns>
 		public static string ToAsciiHalf(string str)
 		{
 			char[] buff = new char[str.Length];
@@ -73,6 +85,7 @@ namespace Charlotte.Utilities
 		/// 戻り値を range とすると
 		/// for (int index = range[0] + 1; index &lt; range[1]; index++) { T element = list[index]; ... }
 		/// と廻すことで範囲内の要素を走査できる。
+		/// ★注意：指定されたリストを自動的にソートしない。
 		/// 比較メソッド：
 		/// -- 少なくとも以下のとおりの比較結果となること。
 		/// ---- 範囲の左側の要素 &lt; 範囲内の要素
@@ -99,6 +112,7 @@ namespace Charlotte.Utilities
 		/// 戻り値を range とすると
 		/// for (int index = range[0] + 1; index &lt; range[1]; index++) { T element = list[index]; ... }
 		/// と廻すことで範囲内の要素を走査できる。
+		/// ★注意：指定されたリストを自動的にソートしない。
 		/// 判定メソッド：
 		/// -- 範囲の左側の要素であれば負の値を返す。
 		/// -- 範囲の右側の要素であれば正の値を返す。

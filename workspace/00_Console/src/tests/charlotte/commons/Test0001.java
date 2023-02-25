@@ -16,7 +16,8 @@ public class Test0001 {
 			//new Test0001().test02();
 			//new Test0001().test03();
 			//new Test0001().test04();
-			new Test0001().test05();
+			//new Test0001().test05();
+			new Test0001().test06();
 		}
 		catch (Throwable e) {
 			e.printStackTrace();
@@ -68,5 +69,43 @@ public class Test0001 {
 		System.out.println(element);
 
 		System.out.println(String.join(", ", list));
+	}
+
+	private void test06() {
+		test06_a(1000000000);
+		test06_a(100000000);
+		test06_a(10000000);
+		test06_a(1000000);
+		test06_a(100000);
+		test06_a(10000);
+		test06_a(1000);
+		test06_a(100);
+		test06_a(10);
+
+		System.out.println("OK!");
+	}
+
+	private void test06_a(int scale) {
+		System.out.println("scale: " + scale);
+
+		for (int testCnt = 0; testCnt < 300000; testCnt++) {
+			String a = "" + SCommon.cryptRandom.getInt(scale);
+			String b = "" + SCommon.cryptRandom.getInt(scale);
+
+			int ret1 = a.compareTo(b);
+			int ret2 = SCommon.compare(
+					SCommon.toList(a.toCharArray()),
+					SCommon.toList(b.toCharArray()), (v1, v2) -> (int)v1.charValue() - (int)v2.charValue());
+
+			ret1 = SCommon.toRange(ret1, -1, 1);
+			ret2 = SCommon.toRange(ret2, -1, 1);
+
+			//System.out.println(ret1 + ", " + ret2); // test
+
+			if (ret1 != ret2) {
+				throw null;
+			}
+		}
+		System.out.println("OK");
 	}
 }
