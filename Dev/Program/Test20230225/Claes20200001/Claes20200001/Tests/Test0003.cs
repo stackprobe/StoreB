@@ -12,9 +12,9 @@ namespace Charlotte.Tests
 		{
 			Test01_a(0, 0, 0); // 長さゼロ
 
-			foreach (int a in new int[] { 10, 30, 100, 300, 1000 })
+			foreach (int a in new int[] { 1, 2, 3, 4, 5, 10, 30, 100, 300, 1000 })
 			{
-				foreach (int b in new int[] { 10, 30, 100, 300, 1000 })
+				foreach (int b in new int[] { 1, 2, 3, 4, 5, 10, 30, 100, 300, 1000 })
 				{
 					Console.WriteLine(a + ", " + b);
 
@@ -33,10 +33,10 @@ namespace Charlotte.Tests
 
 		private void Test01_a(int countScale, int valueScale, int targetValue)
 		{
-			int count = SCommon.CRandom.GetRange(0, countScale);
-			int maxValue = SCommon.CRandom.GetRange(0, valueScale);
-
-			int[] arr = Enumerable.Range(0, count).Select(dummy => SCommon.CRandom.GetRange(0, maxValue)).ToArray();
+			int[] arr = Enumerable
+				.Range(0, SCommon.CRandom.GetRange(0, countScale))
+				.Select(dummy => SCommon.CRandom.GetRange(0, valueScale))
+				.ToArray();
 
 			Array.Sort(arr, SCommon.Comp);
 
