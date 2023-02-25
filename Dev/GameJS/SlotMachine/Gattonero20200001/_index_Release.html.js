@@ -38,15 +38,19 @@ window.onload = function()
 <div style="color: #a00000;">
 レート<br/>
 ====<br/>
-7 BONUS 青 : x 10000<br/>
-7 BONUS 赤 : x 3000<br/>
-BAR : x 1000<br/>
-スイカ 青 : x 300<br/>
-スイカ 赤 : x 100<br/>
-ベル 青 : x 30<br/>
-ベル 黄 : x 10<br/>
-さくらんぼ 緑 : x 3<br/>
-さくらんぼ 赤 : x 2<br/>
+7 BONUS 青 : x 1,000,000<br/>
+7 BONUS 赤 : x 300,000<br/>
+7 BONUS 赤青mix : x 100,000<br/>
+BAR : x 30,000<br/>
+スイカ 青 : x 10,000<br/>
+スイカ 赤 : x 3,000<br/>
+スイカ 赤青mix : x 1,000<br/>
+ベル 青 : x 300<br/>
+ベル 黄 : x 100<br/>
+ベル 青黄mix : x 30<br/>
+さくらんぼ 緑 : x 10<br/>
+さくらんぼ 赤 : x 3<br/>
+さくらんぼ 赤緑mix : x 2<br/>
 </div>
 
 <br/>
