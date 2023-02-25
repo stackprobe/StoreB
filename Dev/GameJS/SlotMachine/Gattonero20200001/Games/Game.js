@@ -239,7 +239,8 @@ gameLoop:
 					if (1 <= @@_Credit && (mouseDown == 1 || 60 <= mouseDown))
 					{
 //						var<int> dLmt = 1 + ToFix(mouseDown / 60.0);
-						var<int> dLmt = 1 + ToFix(mouseDown / 10.0);
+//						var<int> dLmt = 1 + ToFix(mouseDown / 10.0);
+						var<int> dLmt = 1 + ToFix(mouseDown / 3.0);
 
 						dLmt = Math.min(dLmt, 100);
 					
