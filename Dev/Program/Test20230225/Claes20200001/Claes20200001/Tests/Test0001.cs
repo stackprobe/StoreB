@@ -25,7 +25,7 @@ namespace Charlotte.Tests
 			public string PostalCode;    // 郵便番号
 		}
 
-		private List<CustomerInfo> Customers;
+		private List<CustomerInfo> Customers = new List<CustomerInfo>();
 
 		private void CreateCustomers()
 		{
@@ -141,11 +141,9 @@ namespace Charlotte.Tests
 
 		private const string SAVE_DATA_FILE = @"C:\temp\Customers.csv";
 
-		public void Test01()
+		private void SaveDb(string file = SAVE_DATA_FILE)
 		{
-			CreateCustomers();
-
-			using (CsvFileWriter writer = new CsvFileWriter(SAVE_DATA_FILE))
+			using (CsvFileWriter writer = new CsvFileWriter(file))
 			{
 				foreach (CustomerInfo customer in this.Customers)
 				{
@@ -159,26 +157,53 @@ namespace Charlotte.Tests
 					writer.EndRow();
 				}
 			}
+		}
 
+		private void LoadDb(string file = SAVE_DATA_FILE)
+		{
 			this.Customers.Clear();
 
-			using (CsvFileReader reader = new CsvFileReader(SAVE_DATA_FILE))
+			using (CsvFileReader reader = new CsvFileReader(file))
 			{
-				string[] row = reader.ReadRow();
-				int c = 0;
+				for (; ; )
+				{
+					string[] row = reader.ReadRow();
 
-				CustomerInfo customer = new CustomerInfo();
+					if (row == null)
+						break;
 
-				customer.CustomerId = int.Parse(row[c++]);
-				customer.FirstName = row[c++];
-				customer.LastName = row[c++];
-				customer.Email = row[c++];
-				customer.PhoneNumber = row[c++];
-				customer.Address = row[c++];
-				customer.PostalCode = row[c++];
+					CustomerInfo customer = new CustomerInfo();
+					int c = 0;
 
-				this.Customers.Add(customer);
+					customer.CustomerId = int.Parse(row[c++]);
+					customer.FirstName = row[c++];
+					customer.LastName = row[c++];
+					customer.Email = row[c++];
+					customer.PhoneNumber = row[c++];
+					customer.Address = row[c++];
+					customer.PostalCode = row[c++];
+
+					this.Customers.Add(customer);
+				}
 			}
+		}
+
+		public void Test01()
+		{
+			CreateCustomers();
+
+			this.SaveDb();
+			this.LoadDb();
+
+			this.SaveDb(@"C:\temp\1.csv");
+
+			string hash1 = SCommon.Hex.ToString(SCommon.GetSHA512File(SAVE_DATA_FILE));
+			string hash2 = SCommon.Hex.ToString(SCommon.GetSHA512File(@"C:\temp\1.csv"));
+
+			if (hash1 != hash2)
+				throw null;
+
+			Console.WriteLine("OK");
 		}
 	}
 }
