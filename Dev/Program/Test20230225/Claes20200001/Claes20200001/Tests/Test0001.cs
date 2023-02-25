@@ -205,5 +205,30 @@ namespace Charlotte.Tests
 
 			Console.WriteLine("OK");
 		}
+
+		public void Test02()
+		{
+			ProcMain.WriteLog("*1");
+
+			this.LoadDb();
+
+			ProcMain.WriteLog("*2");
+
+			{
+				List<CustomerInfo> dest = new List<CustomerInfo>();
+
+				foreach (CustomerInfo customer in this.Customers)
+				{
+					if (customer.Address.Contains("東京都"))
+					{
+						dest.Add(customer);
+					}
+				}
+
+				Console.WriteLine(dest.Count);
+			}
+
+			ProcMain.WriteLog("*3");
+		}
 	}
 }
