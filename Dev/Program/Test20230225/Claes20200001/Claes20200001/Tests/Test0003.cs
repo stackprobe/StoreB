@@ -43,6 +43,8 @@ namespace Charlotte.Tests
 			int[] range1 = Test01_b(arr, targetValue, SCommon.Comp);
 			int[] range2 = GetRange(arr, targetValue, SCommon.Comp);
 
+			//Console.WriteLine(range1[0] + ", " + range1[1], " / " + range2[0] + ", " + range2[1]); // test
+
 			if (SCommon.Comp(range1, range2, SCommon.Comp) != 0)
 				throw null; // BUG !!!
 		}
