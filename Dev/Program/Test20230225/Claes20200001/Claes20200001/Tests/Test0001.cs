@@ -23,6 +23,19 @@ namespace Charlotte.Tests
 			//public string State;         // 都道府県
 			//public string Country;       // 国名
 			public string PostalCode;    // 郵便番号
+
+			// ----
+
+			public long Value01;
+			public long Value02;
+			public long Value03;
+			public long Value04;
+			public long Value05;
+			public long Value06;
+			public long Value07;
+			public long Value08;
+			public long Value09;
+			public long Value10;
 		}
 
 		private List<CustomerInfo> Customers = new List<CustomerInfo>();
@@ -53,6 +66,19 @@ namespace Charlotte.Tests
 					PhoneNumber = SCommon.CRandom.GetRange(100, 999) + "-" + SCommon.CRandom.GetRange(1000, 9999) + "-" + SCommon.CRandom.GetRange(1000, 9999),
 					Address = MakeAddress(),
 					PostalCode = SCommon.CRandom.GetRange(100, 999) + "-" + SCommon.CRandom.GetRange(1000, 9999),
+
+					// ----
+
+					Value01 = SCommon.CRandom.GetLong(SCommon.IMAX_64),
+					Value02 = SCommon.CRandom.GetLong(SCommon.IMAX_64),
+					Value03 = SCommon.CRandom.GetLong(SCommon.IMAX_64),
+					Value04 = SCommon.CRandom.GetLong(SCommon.IMAX_64),
+					Value05 = SCommon.CRandom.GetLong(SCommon.IMAX_64),
+					Value06 = SCommon.CRandom.GetLong(SCommon.IMAX_64),
+					Value07 = SCommon.CRandom.GetLong(SCommon.IMAX_64),
+					Value08 = SCommon.CRandom.GetLong(SCommon.IMAX_64),
+					Value09 = SCommon.CRandom.GetLong(SCommon.IMAX_64),
+					Value10 = SCommon.CRandom.GetLong(SCommon.IMAX_64),
 				};
 
 				this.Customers.Add(customer);
@@ -154,6 +180,16 @@ namespace Charlotte.Tests
 					writer.WriteCell(customer.PhoneNumber);
 					writer.WriteCell(customer.Address);
 					writer.WriteCell(customer.PostalCode);
+					writer.WriteCell(customer.Value01.ToString());
+					writer.WriteCell(customer.Value02.ToString());
+					writer.WriteCell(customer.Value03.ToString());
+					writer.WriteCell(customer.Value04.ToString());
+					writer.WriteCell(customer.Value05.ToString());
+					writer.WriteCell(customer.Value06.ToString());
+					writer.WriteCell(customer.Value07.ToString());
+					writer.WriteCell(customer.Value08.ToString());
+					writer.WriteCell(customer.Value09.ToString());
+					writer.WriteCell(customer.Value10.ToString());
 					writer.EndRow();
 				}
 			}
@@ -182,6 +218,19 @@ namespace Charlotte.Tests
 					customer.PhoneNumber = row[c++];
 					customer.Address = row[c++];
 					customer.PostalCode = row[c++];
+					customer.Value01 = long.Parse(row[c++]);
+					customer.Value02 = long.Parse(row[c++]);
+					customer.Value03 = long.Parse(row[c++]);
+					customer.Value04 = long.Parse(row[c++]);
+					customer.Value05 = long.Parse(row[c++]);
+					customer.Value06 = long.Parse(row[c++]);
+					customer.Value07 = long.Parse(row[c++]);
+					customer.Value08 = long.Parse(row[c++]);
+					customer.Value09 = long.Parse(row[c++]);
+					customer.Value10 = long.Parse(row[c++]);
+
+					if (row.Length != c)
+						throw null;
 
 					this.Customers.Add(customer);
 				}
@@ -220,6 +269,42 @@ namespace Charlotte.Tests
 				foreach (CustomerInfo customer in this.Customers)
 				{
 					if (customer.Address.Contains("東京都"))
+					{
+						dest.Add(customer);
+					}
+				}
+
+				Console.WriteLine(dest.Count);
+			}
+
+			ProcMain.WriteLog("*3");
+		}
+
+		public void Test03()
+		{
+			ProcMain.WriteLog("*1");
+
+			this.LoadDb();
+
+			ProcMain.WriteLog("*2");
+
+			{
+				List<CustomerInfo> dest = new List<CustomerInfo>();
+
+				foreach (CustomerInfo customer in this.Customers)
+				{
+					if (
+						customer.Value01 % 13 == 0 ||
+						customer.Value02 % 13 == 0 ||
+						customer.Value03 % 13 == 0 ||
+						customer.Value04 % 13 == 0 ||
+						customer.Value05 % 13 == 0 ||
+						customer.Value06 % 13 == 0 ||
+						customer.Value07 % 13 == 0 ||
+						customer.Value08 % 13 == 0 ||
+						customer.Value09 % 13 == 0 ||
+						customer.Value10 % 13 == 0
+						)
 					{
 						dest.Add(customer);
 					}
