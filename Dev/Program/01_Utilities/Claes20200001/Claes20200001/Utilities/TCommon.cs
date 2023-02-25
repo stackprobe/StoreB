@@ -10,6 +10,64 @@ namespace Charlotte.Utilities
 	/// </summary>
 	public static class TCommon
 	{
+		public static string ToAsciiFull(string str)
+		{
+			char[] buff = new char[str.Length];
+
+			for (int index = 0; index < str.Length; index++)
+				buff[index] = ToAsciiFull(str[index]);
+
+			return new string(buff);
+		}
+
+		public static string ToAsciiHalf(string str)
+		{
+			char[] buff = new char[str.Length];
+
+			for (int index = 0; index < str.Length; index++)
+				buff[index] = ToAsciiHalf(str[index]);
+
+			return new string(buff);
+		}
+
+		/// <summary>
+		/// アスキーコードの文字(0x20～0x7e)を半角から全角に変換する。
+		/// それ以外の文字はそのまま返す。
+		/// </summary>
+		/// <param name="chr">文字</param>
+		/// <returns>変換後の文字</returns>
+		public static char ToAsciiFull(char chr)
+		{
+			if (chr == (char)0x20)
+			{
+				chr = (char)0x3000;
+			}
+			else if (0x21 <= chr && chr <= 0x7e)
+			{
+				chr += (char)0xfee0;
+			}
+			return chr;
+		}
+
+		/// <summary>
+		/// アスキーコードの文字(0x20～0x7e)を全角から半角に変換する。
+		/// それ以外の文字はそのまま返す。
+		/// </summary>
+		/// <param name="chr">文字</param>
+		/// <returns>変換後の文字</returns>
+		public static char ToAsciiHalf(char chr)
+		{
+			if (chr == (char)0x3000)
+			{
+				chr = (char)0x20;
+			}
+			else if (0xff01 <= chr && chr <= 0xff5e)
+			{
+				chr -= (char)0xfee0;
+			}
+			return chr;
+		}
+
 		/// <summary>
 		/// リスト内の範囲(開始位置と終了位置)を取得する。
 		/// 戻り値を range とすると
