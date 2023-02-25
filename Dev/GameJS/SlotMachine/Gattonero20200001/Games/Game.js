@@ -650,5 +650,44 @@ function <int> @@_GetPrize_YPosLst(<int[]> yPosLst)
 		return SLOT_PIC_PRIZES[picIdxs[0]];
 	}
 
+	for (var<int> c = 0; c < 3; c++)
+	{
+		var<int> picIdx = picIdxs[c];
+
+		if (picIdx == 1) { picIdx = 0; } // 7
+		// BAR
+		if (picIdx == 4) { picIdx = 3; } // スイカ
+		if (picIdx == 6) { picIdx = 5; } // ベル
+		if (picIdx == 8) { picIdx = 7; } // さくらんぼ
+
+		picIdxs[c] = picIdx;
+	}
+
+	if (
+		picIdxs[0] == picIdxs[1] &&
+		picIdxs[0] == picIdxs[2]
+		)
+	{
+		var<int> picIdx = picIdxs[0];
+
+		if (picIdx == 0) // ? 7
+		{
+			return 100000;
+		}
+		if (picIdx == 3) // ? スイカ
+		{
+			return 1000;
+		}
+		if (picIdx == 5) // ? ベル
+		{
+			return 30;
+		}
+		if (picIdx == 7) // ? さくらんぼ
+		{
+			return 2;
+		}
+		error(); // never
+	}
+
 	return 0;
 }
