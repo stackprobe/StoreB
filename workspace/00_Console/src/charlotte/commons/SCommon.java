@@ -1,5 +1,7 @@
 package charlotte.commons;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -8,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * 共通機能・便利機能はできるだけこのクラスに集約する。
@@ -256,4 +260,51 @@ public class SCommon {
 		value = Math.min(value, maxval);
 		return value;
 	}
+
+	public static byte[] compress(byte[] src) {
+		try (ByteArrayOutputStream mem = new ByteArrayOutputStream();
+				GZIPOutputStream wrtier = new GZIPOutputStream(mem)
+				) {
+			wrtier.write(src);
+			wrtier.finish();
+			return mem.toByteArray();
+		}
+		catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static byte[] decompress(byte[] src) {
+		try (ByteArrayInputStream mem = new ByteArrayInputStream(src);
+				GZIPInputStream reader = new GZIPInputStream(mem);
+				ByteArrayOutputStream writer = new ByteArrayOutputStream()
+				) {
+			byte[] buff = new byte[2 * 1024 * 1024];
+
+			for (; ; ) {
+				int size = reader.read(buff);
+
+				if (size <= 0) {
+					break;
+				}
+				writer.write(buff, 0, size);
+			}
+			return writer.toByteArray();
+		}
+		catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static final String BINADECIMAL = "01";
+	public static final String OCTODECIMAL = "012234567";
+	public static final String DECIMAL = "0123456789";
+	public static final String HEXADECIMAL = "0123456789ABCDEF";
+	public static final String hexadecimal = "0123456789abcdef";
+	public static final String ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	public static final String alpha = "abcdefghijklmnopqrstuvwxyz";
+
+	public static final String CHARSET_ASCII = "US-ASCII";
+	public static final String CHARSET_SJIS = "MS932";
+	public static final String CHARSET_UTF8 = "UTF-8";
 }
