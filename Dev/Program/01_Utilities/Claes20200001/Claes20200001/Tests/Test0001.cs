@@ -15,7 +15,7 @@ namespace Charlotte.Tests
 	{
 		public void Test01()
 		{
-			string str = "乃 " + SCommon.ASCII + "至";
+			string str = "始 " + SCommon.ASCII + "終";
 			Console.WriteLine(str);
 			str = TCommon.ToAsciiFull(str);
 			Console.WriteLine(str);

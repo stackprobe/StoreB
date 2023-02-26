@@ -296,15 +296,49 @@ public class SCommon {
 		}
 	}
 
+	public interface ThrowableSupplier<T> {
+		public T get() throws Exception;
+	}
+
+	public static <T> T re(ThrowableSupplier<T> routine) {
+		try {
+			return routine.get();
+		}
+		catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static final String CHARSET_ASCII = "US-ASCII";
+	public static final String CHARSET_SJIS = "MS932";
+	public static final String CHARSET_UTF8 = "UTF-8";
+
 	public static final String BINADECIMAL = "01";
 	public static final String OCTODECIMAL = "012234567";
 	public static final String DECIMAL = "0123456789";
 	public static final String HEXADECIMAL = "0123456789ABCDEF";
 	public static final String hexadecimal = "0123456789abcdef";
+
 	public static final String ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	public static final String alpha = "abcdefghijklmnopqrstuvwxyz";
+	public static final String PUNCT =
+			getStringSJISHalfCodeRange(0x21, 0x2f) +
+			getStringSJISHalfCodeRange(0x3a, 0x40) +
+			getStringSJISHalfCodeRange(0x5b, 0x60) +
+			getStringSJISHalfCodeRange(0x7b, 0x7e);
 
-	public static final String CHARSET_ASCII = "US-ASCII";
-	public static final String CHARSET_SJIS = "MS932";
-	public static final String CHARSET_UTF8 = "UTF-8";
+	public static final String ASCII = DECIMAL + ALPHA + alpha + PUNCT; // (0x21, 0x7e) -- 空白(0x20)を含まないことに注意
+	public static final String KANA =
+			getStringSJISHalfCodeRange(0xa1, 0xdf);
+
+	public static final String HALF = ASCII + KANA; // 空白(0x20)を含まないことに注意
+
+	private static String getStringSJISHalfCodeRange(int codeMin, int codeMax) {
+		byte[] buff = new byte[codeMax - codeMin + 1];
+
+		for (int code = codeMin; code <= codeMax; code++) {
+			buff[code - codeMin] = (byte)code;
+		}
+		return SCommon.re(() -> new String(buff, CHARSET_SJIS));
+	}
 }
