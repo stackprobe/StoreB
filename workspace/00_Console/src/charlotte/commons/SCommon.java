@@ -16,44 +16,6 @@ import java.util.function.Consumer;
  */
 public class SCommon {
 
-	public static <T> int compare(List<T> a, List<T> b, Comparator<T> comp) {
-		int count = Math.min(a.size(), b.size());
-
-		for (int index = 0; index < count; index++) {
-			int ret = comp.compare(a.get(index), b.get(index));
-
-			if (ret != 0) {
-				return ret;
-			}
-		}
-		return a.size() - b.size();
-	}
-
-	public static <T> T unaddElement(List<T> list) {
-		return list.remove(list.size() - 1);
-	}
-
-	public static <T> T fastRemoveElement(List<T> list, int index) {
-		T ret;
-
-		if (index == list.size() - 1) {
-			ret = unaddElement(list);
-		}
-		else {
-			ret = list.get(index);
-			list.set(index, unaddElement(list));
-		}
-		return ret;
-	}
-
-	public static <T> void swap(List<T> list, int a, int b) {
-		T tmp = list.get(a);
-		list.set(a, list.get(b));
-		list.set(b, tmp);
-	}
-
-	public static RandomUnit cryptRandom = new RandomUnit(new SecureRandom());
-
 	/**
 	 * ディレクトリ内のディレクトリとファイルを検索する。
 	 * @param targetDirectory 対象ディレクトリ
@@ -250,6 +212,44 @@ public class SCommon {
 	// ****
 	// **** List<PRIMITIVE> -> PRIMITIVE[] ここまで
 	// ****
+
+	public static <T> void swap(List<T> list, int a, int b) {
+		T tmp = list.get(a);
+		list.set(a, list.get(b));
+		list.set(b, tmp);
+	}
+
+	public static <T> T unaddElement(List<T> list) {
+		return list.remove(list.size() - 1);
+	}
+
+	public static <T> T fastRemoveElement(List<T> list, int index) {
+		T ret;
+
+		if (index == list.size() - 1) {
+			ret = unaddElement(list);
+		}
+		else {
+			ret = list.get(index);
+			list.set(index, unaddElement(list));
+		}
+		return ret;
+	}
+
+	public static RandomUnit cryptRandom = new RandomUnit(new SecureRandom());
+
+	public static <T> int compare(List<T> a, List<T> b, Comparator<T> comp) {
+		int count = Math.min(a.size(), b.size());
+
+		for (int index = 0; index < count; index++) {
+			int ret = comp.compare(a.get(index), b.get(index));
+
+			if (ret != 0) {
+				return ret;
+			}
+		}
+		return a.size() - b.size();
+	}
 
 	public static int toRange(int value, int minval, int maxval) {
 		value = Math.max(value, minval);
