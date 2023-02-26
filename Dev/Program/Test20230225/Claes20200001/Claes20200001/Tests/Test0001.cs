@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 using Charlotte.Commons;
 using Charlotte.Utilities;
+using System.IO;
 
 namespace Charlotte.Tests
 {
@@ -314,6 +315,62 @@ namespace Charlotte.Tests
 			}
 
 			ProcMain.WriteLog("*3");
+		}
+
+		// ====
+		// ====
+		// ====
+
+		private const string SQLITE_PROGRAM = @"C:\Berry\app\sqlite-tools-win32-x86-3410000\sqlite3.exe";
+
+		private const string DB_DIR = @"C:\temp";
+		private const string DB_LOCAL_NAME = "DB";
+		private static string DB_FILE = Path.Combine(DB_DIR, DB_LOCAL_NAME);
+
+		private void DoSql(string query)
+		{
+			using (WorkingDir wd = new WorkingDir())
+			{
+				string queryFile = wd.MakePath();
+
+				File.WriteAllText(queryFile, query, Encoding.ASCII);
+
+				SCommon.Batch(
+					new string[]
+					{
+						SQLITE_PROGRAM + " " + DB_LOCAL_NAME + " < " + queryFile,
+					},
+					DB_DIR,
+					SCommon.StartProcessWindowStyle_e.MINIMIZED
+					);
+			}
+		}
+
+		public void Test04()
+		{
+			SCommon.DeletePath(DB_FILE);
+
+			DoSql(@"
+CREATE TABLE Customer(
+	CustomerId,
+	FirstName,
+	LastName,
+	Email,
+	PhoneNumber,
+	Address,
+	PostalCode,
+	Value01,
+	Value02,
+	Value03,
+	Value04,
+	Value05,
+	Value06,
+	Value07,
+	Value08,
+	Value09,
+	Value10
+	)
+				");
 		}
 	}
 }
