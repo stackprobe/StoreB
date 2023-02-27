@@ -327,22 +327,24 @@ namespace Charlotte.Tests
 		private const string DB_LOCAL_NAME = "DB";
 		private static string DB_FILE = Path.Combine(DB_DIR, DB_LOCAL_NAME);
 
-		private void DoSql(string query)
+		private string DoSql(string query)
 		{
 			using (WorkingDir wd = new WorkingDir())
 			{
 				string queryFile = wd.MakePath();
+				string outputFile = wd.MakePath();
 
 				File.WriteAllText(queryFile, query, Encoding.ASCII);
 
 				SCommon.Batch(
 					new string[]
 					{
-						SQLITE_PROGRAM + " " + DB_LOCAL_NAME + " < " + queryFile,
+						SQLITE_PROGRAM + " " + DB_LOCAL_NAME + " < " + queryFile + " > " + outputFile,
 					},
-					DB_DIR,
-					SCommon.StartProcessWindowStyle_e.MINIMIZED
+					DB_DIR
 					);
+
+				return File.ReadAllText(outputFile, Encoding.ASCII);
 			}
 		}
 
@@ -371,6 +373,196 @@ CREATE TABLE Customer(
 	Value10
 	)
 				");
+
+			LoadDb();
+
+#if false // 1行ずつ
+			foreach (CustomerInfo customer in this.Customers)
+			{
+				DoSql(string.Format(@"
+INSERT INTO Customer (
+	CustomerId,
+	FirstName,
+	LastName,
+	Email,
+	PhoneNumber,
+	Address,
+	PostalCode,
+	Value01,
+	Value02,
+	Value03,
+	Value04,
+	Value05,
+	Value06,
+	Value07,
+	Value08,
+	Value09,
+	Value10
+	)
+	VALUES (
+	{0},
+	'{1}',
+	'{2}',
+	'{3}',
+	'{4}',
+	'{5}',
+	'{6}',
+	{7},
+	{8},
+	{9},
+	{10},
+	{11},
+	{12},
+	{13},
+	{14},
+	{15},
+	{16}
+	)
+					"
+					, customer.CustomerId
+					, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.FirstName))
+					, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.LastName))
+					, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.Email))
+					, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.PhoneNumber))
+					, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.Address))
+					, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.PostalCode))
+					, customer.Value01
+					, customer.Value02
+					, customer.Value03
+					, customer.Value04
+					, customer.Value05
+					, customer.Value06
+					, customer.Value07
+					, customer.Value08
+					, customer.Value09
+					, customer.Value10
+					));
+			}
+#else // 複数行同時
+			for (int index = 0; index < this.Customers.Count; )
+			{
+				int count = Math.Min(this.Customers.Count - index, 30000);
+				string query;
+
+				{
+					StringBuilder buff = new StringBuilder();
+
+					buff.Append(@"
+INSERT INTO Customer (
+	CustomerId,
+	FirstName,
+	LastName,
+	Email,
+	PhoneNumber,
+	Address,
+	PostalCode,
+	Value01,
+	Value02,
+	Value03,
+	Value04,
+	Value05,
+	Value06,
+	Value07,
+	Value08,
+	Value09,
+	Value10
+	)
+	VALUES (
+						");
+
+					for (int i = 0; i < count; i++)
+					{
+						if (1 <= i)
+							buff.Append("), (");
+
+						CustomerInfo customer = this.Customers[index + i];
+
+						buff.Append(string.Format(@"
+	{0},
+	'{1}',
+	'{2}',
+	'{3}',
+	'{4}',
+	'{5}',
+	'{6}',
+	{7},
+	{8},
+	{9},
+	{10},
+	{11},
+	{12},
+	{13},
+	{14},
+	{15},
+	{16}
+							"
+							, customer.CustomerId
+							, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.FirstName))
+							, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.LastName))
+							, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.Email))
+							, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.PhoneNumber))
+							, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.Address))
+							, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.PostalCode))
+							, customer.Value01
+							, customer.Value02
+							, customer.Value03
+							, customer.Value04
+							, customer.Value05
+							, customer.Value06
+							, customer.Value07
+							, customer.Value08
+							, customer.Value09
+							, customer.Value10
+							));
+					}
+					buff.Append(")");
+
+					query = buff.ToString();
+				}
+
+				DoSql(query);
+
+				// ----
+
+				index += count;
+			}
+#endif
+		}
+
+		public void Test05()
+		{
+			ProcMain.WriteLog("*1");
+
+			string outputText = DoSql("SELECT COUNT(*) FROM Customer WHERE Address LIKE '%" + SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes("東京都")) + "%'");
+			Console.WriteLine(outputText);
+
+			ProcMain.WriteLog("*2");
+		}
+
+		public void Test06()
+		{
+			ProcMain.WriteLog("*1");
+
+			string outputText = DoSql(@"
+SELECT
+	COUNT(*)
+FROM
+	Customer
+WHERE
+	Value01 % 13 = 0 OR
+	Value02 % 13 = 0 OR
+	Value03 % 13 = 0 OR
+	Value04 % 13 = 0 OR
+	Value05 % 13 = 0 OR
+	Value06 % 13 = 0 OR
+	Value07 % 13 = 0 OR
+	Value08 % 13 = 0 OR
+	Value09 % 13 = 0 OR
+	Value10 % 13 = 0
+				");
+			Console.WriteLine(outputText);
+
+			ProcMain.WriteLog("*2");
 		}
 	}
 }
