@@ -420,12 +420,12 @@ INSERT INTO Customer (
 	)
 					"
 					, customer.CustomerId
-					, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.FirstName))
-					, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.LastName))
-					, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.Email))
-					, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.PhoneNumber))
-					, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.Address))
-					, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.PostalCode))
+					, BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.FirstName))
+					, BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.LastName))
+					, BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.Email))
+					, BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.PhoneNumber))
+					, BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.Address))
+					, BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.PostalCode))
 					, customer.Value01
 					, customer.Value02
 					, customer.Value03
@@ -497,12 +497,12 @@ INSERT INTO Customer (
 	{16}
 							"
 							, customer.CustomerId
-							, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.FirstName))
-							, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.LastName))
-							, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.Email))
-							, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.PhoneNumber))
-							, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.Address))
-							, SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.PostalCode))
+							, BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.FirstName))
+							, BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.LastName))
+							, BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.Email))
+							, BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.PhoneNumber))
+							, BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.Address))
+							, BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes(customer.PostalCode))
 							, customer.Value01
 							, customer.Value02
 							, customer.Value03
@@ -533,7 +533,7 @@ INSERT INTO Customer (
 		{
 			ProcMain.WriteLog("*1");
 
-			string outputText = DoSql("SELECT COUNT(*) FROM Customer WHERE Address LIKE '%" + SCommon.Hex.ToString(SCommon.ENCODING_SJIS.GetBytes("東京都")) + "%'");
+			string outputText = DoSql("SELECT COUNT(*) FROM Customer WHERE Address LIKE '%" + BitConverter.ToString(SCommon.ENCODING_SJIS.GetBytes("東京都")) + "%'");
 			Console.WriteLine(outputText);
 
 			ProcMain.WriteLog("*2");
