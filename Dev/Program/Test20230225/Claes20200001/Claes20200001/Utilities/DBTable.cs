@@ -44,13 +44,28 @@ namespace Charlotte.Utilities
 
 			buff.Append("DROP TABLE ");
 			buff.Append(this.TableName);
-			buff.Append(";");
+			buff.Append(" ;");
 
 			this.DB.Execute(buff.ToString(), resultFile => { });
 		}
 
-		//
-		//
-		//
+		public void Select(Action<string[]> values)
+		{
+			StringBuilder buff = new StringBuilder();
+
+			buff.Append("SELECT ");
+			buff.Append(string.Join(" , ", this.ColumnNames));
+			buff.Append(" FROM ");
+			buff.Append(this.TableName);
+			buff.Append(" ;");
+		}
+
+		public void Insert(IEnumerable<string[]> rows)
+		{
+			using (IEnumerator<string[]> reader = rows.GetEnumerator())
+			{
+
+			}
+		}
 	}
 }
