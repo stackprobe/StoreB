@@ -7,10 +7,7 @@ namespace Charlotte.Utilities
 {
 	public interface DBColumn
 	{
-		string ToDBValueString(long value);
 		string ToDBValueString(string value);
-
-		long ToLongFromDBValueString(string value);
-		string ToStringFromDBValueString(string value);
+		string FromDBValueString(string value);
 	}
 }

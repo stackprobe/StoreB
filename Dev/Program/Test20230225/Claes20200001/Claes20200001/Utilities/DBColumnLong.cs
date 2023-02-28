@@ -2,29 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Charlotte.Utilities
 {
 	public class DBColumnLong : DBColumn
 	{
-		public string ToDBValueString(long value)
-		{
-			return value.ToString();
-		}
-
 		public string ToDBValueString(string value)
 		{
-			return this.ToDBValueString(long.Parse(value));
+			return long.Parse(value).ToString();
 		}
 
-		public long ToLongFromDBValueString(string value)
+		public string FromDBValueString(string value)
 		{
-			return long.Parse(value);
-		}
-
-		public string ToStringFromDBValueString(string value)
-		{
-			return this.ToLongFromDBValueString(value).ToString();
+			return long.Parse(value).ToString();
 		}
 	}
 }
