@@ -12,9 +12,9 @@ namespace Charlotte.Tests
 		{
 			Database db = new Database(@"C:\temp\DB");
 
-			// TODO
-			// TODO
-			// TODO
+			//
+			//
+			//
 		}
 	}
 }
