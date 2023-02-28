@@ -6,10 +6,12 @@ using Charlotte.Utilities;
 
 namespace Charlotte.Tests
 {
-	public class Test0002
+	public class Test0005
 	{
 		public void Test01()
 		{
+			Database db = new Database(@"C:\temp\DB");
+
 			// TODO
 			// TODO
 			// TODO
