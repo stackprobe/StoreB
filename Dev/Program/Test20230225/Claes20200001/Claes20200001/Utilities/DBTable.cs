@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Charlotte.Utilities
 {
@@ -17,12 +18,11 @@ namespace Charlotte.Utilities
 		}
 
 		private List<DBColumn> Columns = new List<DBColumn>();
-		private List<string> ColumnNames = new List<string>();
 
 		public void AddColumn(DBColumn column, string name)
 		{
 			this.Columns.Add(column);
-			this.ColumnNames.Add(name);
+			column.Name = name;
 		}
 
 		public void Create()
@@ -32,7 +32,7 @@ namespace Charlotte.Utilities
 			buff.Append("CREATE TABLE ");
 			buff.Append(this.TableName);
 			buff.Append(" ( ");
-			buff.Append(string.Join(" , ", this.ColumnNames));
+			buff.Append(string.Join(" , ", this.Columns.Select(v => v.Name)));
 			buff.Append(" );");
 
 			this.DB.Execute(buff.ToString(), resultFile => { });
@@ -49,22 +49,47 @@ namespace Charlotte.Utilities
 			this.DB.Execute(buff.ToString(), resultFile => { });
 		}
 
-		public void Select(Action<string[]> values)
+		public void Select(Action<string[]> values, string condition = "1 = 1", Action<string[]> reaction)
 		{
 			StringBuilder buff = new StringBuilder();
 
 			buff.Append("SELECT ");
-			buff.Append(string.Join(" , ", this.ColumnNames));
+			buff.Append(string.Join(" , ", this.Columns.Select(v => v.Name)));
 			buff.Append(" FROM ");
 			buff.Append(this.TableName);
-			buff.Append(" ;");
+			buff.Append(" WHERE ");
+			buff.Append(condition);
+
+			this.DB.Execute(buff.ToString(), resultFile =>
+			{
+				using (StreamReader reader = new StreamReader(resultFile, Encoding.UTF8))
+				{
+					for (; ; )
+					{
+						string line = reader.ReadLine();
+
+						if (line == null)
+							break;
+
+						string[] row = line.Split('|');
+
+						row = Enumerable.Range(0, row.Length)
+							.Select(index => this.Columns[index].ToDBValueString(row[index]))
+							.ToArray();
+
+						reaction(row);
+					}
+				}
+			});
 		}
 
 		public void Insert(IEnumerable<string[]> rows)
 		{
 			using (IEnumerator<string[]> reader = rows.GetEnumerator())
 			{
-
+				//
+				//
+				//
 			}
 		}
 	}

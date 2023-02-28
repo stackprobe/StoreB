@@ -8,12 +8,12 @@ namespace Charlotte.Utilities
 {
 	public class DBColumnString : DBColumn
 	{
-		public string ToDBValueString(string value)
+		public override string ToDBValueString(string value)
 		{
 			return "'" + BitConverter.ToString(Encoding.UTF8.GetBytes(value)) + "'";
 		}
 
-		public string FromDBValueString(string value)
+		public override string FromDBValueString(string value)
 		{
 			return Encoding.UTF8.GetString(SCommon.Hex.ToBytes(value.Replace("-", "")));
 		}
