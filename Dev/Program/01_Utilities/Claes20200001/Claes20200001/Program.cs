@@ -55,7 +55,8 @@ namespace Charlotte
 			// -- choose one --
 
 			//new Test0001().Test01(); // TCommon
-			new Test0001().Test02(); // TCommon
+			//new Test0001().Test02(); // TCommon
+			new Test0002().Test01();
 
 			// --
 		}
