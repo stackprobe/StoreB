@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Charlotte.Commons;
 
 namespace Charlotte.Utilities
 {
-	public interface DBColumn
+	public abstract class DBColumn
 	{
-		string ToDBValueString(string value);
-		string FromDBValueString(string value);
+		public string Name;
+
+		public abstract string ToDBValueString(string value);
+		public abstract string FromDBValueString(string value);
 	}
 }

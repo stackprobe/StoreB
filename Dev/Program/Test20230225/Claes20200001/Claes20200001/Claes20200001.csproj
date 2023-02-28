@@ -79,6 +79,7 @@
     <Compile Include="Utilities\DBColumn.cs" />
     <Compile Include="Utilities\DBColumnLong.cs" />
     <Compile Include="Utilities\DBColumnString.cs" />
+    <Compile Include="Utilities\DBCommon.cs" />
     <Compile Include="Utilities\DBTable.cs" />
   </ItemGroup>
   <ItemGroup />
