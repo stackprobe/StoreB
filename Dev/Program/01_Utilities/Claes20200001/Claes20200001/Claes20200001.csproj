@@ -69,6 +69,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\Test0001.cs" />
+    <Compile Include="Tests\Test0002.cs" />
+    <Compile Include="Utilities\Database.cs" />
     <Compile Include="Utilities\TCommon.cs" />
   </ItemGroup>
   <ItemGroup />
