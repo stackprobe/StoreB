@@ -46,10 +46,10 @@ namespace Charlotte.Utilities
 					new string[]
 					{
 						SqliteProgram + " " + DBFileName + " < \"" + queryFile + "\" > \"" + resultFile + "\"",
-						"PAUSE",
+						//"PAUSE",
 					},
 					this.DBDir
-					, SCommon.StartProcessWindowStyle_e.NORMAL
+					//, SCommon.StartProcessWindowStyle_e.NORMAL
 					);
 
 				resultFileReaction(resultFile);
