@@ -10,30 +10,17 @@ namespace Charlotte.Utilities
 	{
 		private Database DB;
 		private string TableName;
+		private DBColumn[] Columns;
 
-		public DBTable(Database db, string name)
+		public DBTable(Database db, string name, DBColumn[] columns)
 		{
 			this.DB = db;
 			this.TableName = name;
-		}
-
-		private List<DBColumn> Columns = new List<DBColumn>();
-
-		public void AddColumn(DBColumn column)
-		{
-			this.Columns.Add(column);
-		}
-
-		private void Before()
-		{
-			if (this.Columns.Count == 0)
-				throw null; // never
+			this.Columns = columns;
 		}
 
 		public void Create()
 		{
-			this.Before();
-
 			StringBuilder query = new StringBuilder();
 
 			query.Append("CREATE TABLE ");
@@ -47,8 +34,6 @@ namespace Charlotte.Utilities
 
 		public void Drop()
 		{
-			this.Before();
-
 			StringBuilder query = new StringBuilder();
 
 			query.Append("DROP TABLE ");
@@ -60,8 +45,6 @@ namespace Charlotte.Utilities
 
 		public void Delete(string condition)
 		{
-			this.Before();
-
 			StringBuilder query = new StringBuilder();
 
 			query.Append("DELETE FROM ");
@@ -74,8 +57,6 @@ namespace Charlotte.Utilities
 
 		public void Insert(IEnumerable<string[]> rows)
 		{
-			this.Before();
-
 			StringBuilder query = null;
 
 			using (IEnumerator<string[]> reader = rows.GetEnumerator())
@@ -120,8 +101,6 @@ namespace Charlotte.Utilities
 
 		public void Select(string condition, Action<string[]> reaction)
 		{
-			this.Before();
-
 			StringBuilder query = new StringBuilder();
 
 			query.Append("SELECT ");

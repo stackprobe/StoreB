@@ -11,12 +11,13 @@ namespace Charlotte.Tests
 		public void Test01()
 		{
 			Database db = new Database(@"C:\temp\DB");
-			DBTable table = new DBTable(db, "HogeHoge");
-
-			table.AddColumn(new DBColumn(DBColumn.ColumnType_e.LONG, "ID"));
-			table.AddColumn(new DBColumn(DBColumn.ColumnType_e.STRING, "NAME"));
-			table.AddColumn(new DBColumn(DBColumn.ColumnType_e.STRING, "VALUE"));
-			table.AddColumn(new DBColumn(DBColumn.ColumnType_e.LONG, "UPDT_DATE"));
+			DBTable table = new DBTable(db, "Table_01", new DBColumn[]
+			{
+				new DBColumn(DBColumn.ColumnType_e.LONG, "ID"),
+				new DBColumn(DBColumn.ColumnType_e.STRING, "NAME"),
+				new DBColumn(DBColumn.ColumnType_e.STRING, "VALUE"),
+				new DBColumn(DBColumn.ColumnType_e.LONG, "UPDT_DATE"),
+			});
 
 			table.Drop();
 			table.Create();
