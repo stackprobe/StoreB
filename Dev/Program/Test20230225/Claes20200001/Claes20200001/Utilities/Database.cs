@@ -40,12 +40,16 @@ namespace Charlotte.Utilities
 				string queryFile = wd.MakePath();
 				string resultFile = wd.MakePath();
 
+				File.WriteAllText(queryFile, query, Encoding.ASCII);
+
 				SCommon.Batch(
 					new string[]
 					{
 						SqliteProgram + " " + DBFileName + " < \"" + queryFile + "\" > \"" + resultFile + "\"",
+						"PAUSE",
 					},
 					this.DBDir
+					, SCommon.StartProcessWindowStyle_e.NORMAL
 					);
 
 				resultFileReaction(resultFile);

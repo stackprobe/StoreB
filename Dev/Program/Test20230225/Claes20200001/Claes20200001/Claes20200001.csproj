@@ -77,9 +77,6 @@
     <Compile Include="Tests\Test0001.cs" />
     <Compile Include="Utilities\Database.cs" />
     <Compile Include="Utilities\DBColumn.cs" />
-    <Compile Include="Utilities\DBColumnLong.cs" />
-    <Compile Include="Utilities\DBColumnString.cs" />
-    <Compile Include="Utilities\DBCommon.cs" />
     <Compile Include="Utilities\DBTable.cs" />
   </ItemGroup>
   <ItemGroup />

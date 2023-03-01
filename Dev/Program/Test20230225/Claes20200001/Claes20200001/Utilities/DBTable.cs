@@ -19,50 +19,121 @@ namespace Charlotte.Utilities
 
 		private List<DBColumn> Columns = new List<DBColumn>();
 
-		public void AddColumn(DBColumn column, string name)
+		public void AddColumn(DBColumn column)
 		{
 			this.Columns.Add(column);
-			column.Name = name;
+		}
+
+		private void Before()
+		{
+			if (this.Columns.Count == 0)
+				throw null; // never
 		}
 
 		public void Create()
 		{
-			StringBuilder buff = new StringBuilder();
+			this.Before();
 
-			buff.Append("CREATE TABLE ");
-			buff.Append(this.TableName);
-			buff.Append(" ( ");
-			buff.Append(string.Join(" , ", this.Columns.Select(v => v.Name)));
-			buff.Append(" );");
+			StringBuilder query = new StringBuilder();
 
-			this.DB.Execute(buff.ToString(), resultFile => { });
+			query.Append("CREATE TABLE ");
+			query.Append(this.TableName);
+			query.Append(" ( ");
+			query.Append(string.Join(" , ", this.Columns.Select(v => v.Name)));
+			query.Append(" );");
+
+			this.DB.Execute(query.ToString(), resultFile => { });
 		}
 
 		public void Drop()
 		{
-			StringBuilder buff = new StringBuilder();
+			this.Before();
 
-			buff.Append("DROP TABLE ");
-			buff.Append(this.TableName);
-			buff.Append(" ;");
+			StringBuilder query = new StringBuilder();
 
-			this.DB.Execute(buff.ToString(), resultFile => { });
+			query.Append("DROP TABLE ");
+			query.Append(this.TableName);
+			query.Append(" ;");
+
+			this.DB.Execute(query.ToString(), resultFile => { });
 		}
 
-		public void Select(Action<string[]> values, string condition = "1 = 1", Action<string[]> reaction)
+		public void Delete(string condition)
 		{
-			StringBuilder buff = new StringBuilder();
+			this.Before();
 
-			buff.Append("SELECT ");
-			buff.Append(string.Join(" , ", this.Columns.Select(v => v.Name)));
-			buff.Append(" FROM ");
-			buff.Append(this.TableName);
-			buff.Append(" WHERE ");
-			buff.Append(condition);
+			StringBuilder query = new StringBuilder();
 
-			this.DB.Execute(buff.ToString(), resultFile =>
+			query.Append("DELETE FROM ");
+			query.Append(this.TableName);
+			query.Append(" WHERE ");
+			query.Append(condition);
+
+			this.DB.Execute(query.ToString(), resultFile => { });
+		}
+
+		public void Insert(IEnumerable<string[]> rows)
+		{
+			this.Before();
+
+			StringBuilder query = null;
+
+			using (IEnumerator<string[]> reader = rows.GetEnumerator())
 			{
-				using (StreamReader reader = new StreamReader(resultFile, Encoding.UTF8))
+				while (reader.MoveNext())
+				{
+					if (query == null)
+					{
+						query = new StringBuilder();
+						query.Append("INSERT INTO ");
+						query.Append(this.TableName);
+						query.Append(" ( ");
+						query.Append(string.Join(" , ", this.Columns.Select(v => v.Name)));
+						query.Append(" ) VALUES ");
+					}
+					else
+					{
+						query.Append(" , ");
+					}
+					string[] row = reader.Current;
+
+					row = Enumerable.Range(0, row.Length)
+						.Select(index => this.Columns[index].ToDBValue(row[index]))
+						.ToArray();
+
+					query.Append("( ");
+					query.Append(string.Join(" , ", row));
+					query.Append(" )");
+
+					if (30000000 < query.Length) // rought limit
+					{
+						this.DB.Execute(query.ToString(), resultFile => { });
+						query = null;
+					}
+				}
+				if (query != null)
+				{
+					this.DB.Execute(query.ToString(), resultFile => { });
+				}
+			}
+		}
+
+		public void Select(string condition, Action<string[]> reaction)
+		{
+			this.Before();
+
+			StringBuilder query = new StringBuilder();
+
+			query.Append("SELECT ");
+			query.Append(string.Join(" , ", this.Columns.Select(v => v.Name)));
+			query.Append(" FROM ");
+			query.Append(this.TableName);
+			query.Append(" WHERE ");
+			query.Append(condition);
+
+			this.DB.Execute(query.ToString(), resultFile =>
+			{
+				using (StreamReader reader = new StreamReader(resultFile, Encoding.ASCII))
 				{
 					for (; ; )
 					{
@@ -74,23 +145,13 @@ namespace Charlotte.Utilities
 						string[] row = line.Split('|');
 
 						row = Enumerable.Range(0, row.Length)
-							.Select(index => this.Columns[index].ToDBValueString(row[index]))
+							.Select(index => this.Columns[index].FromDBValue(row[index]))
 							.ToArray();
 
 						reaction(row);
 					}
 				}
 			});
-		}
-
-		public void Insert(IEnumerable<string[]> rows)
-		{
-			using (IEnumerator<string[]> reader = rows.GetEnumerator())
-			{
-				//
-				//
-				//
-			}
 		}
 	}
 }
