@@ -57,7 +57,45 @@ namespace Charlotte.Tests
 
 		public void Test02()
 		{
-			//
+			double[] curr = new double[] { 0.0, 1.0 };
+			int phase = 0;
+			double winRate = 0.0;
+
+			//while (phase < 1000)
+			while (phase < 3000)
+			//while (phase < 10000)
+			//while (phase < 30000)
+			//while (phase < 100000)
+			{
+				double[] next = new double[curr.Length + 1];
+				for (int i = 1; i < curr.Length; i++)
+				{
+					double r = curr[i] / 2.0;
+
+					next[i - 1] += r;
+					next[i + 1] += r;
+				}
+				phase++;
+
+				curr = next;
+				next = null;
+				winRate += curr[0] * phase;
+				curr[0] = 0.0;
+
+				double loseNumer = 0.0;
+				double loseDenom = 0.0;
+
+				for (int i = 1; i < curr.Length; i++)
+				{
+					loseNumer += curr[i] * (i - 1);
+					loseDenom += curr[i];
+				}
+				double loseRate = loseNumer / loseDenom;
+
+				Console.WriteLine(phase + " --> "
+					+ winRate.ToString("F9") + " , " + (1.0 - loseDenom).ToString("F9") + " / "
+					+ loseRate.ToString("F9") + " , " + loseDenom.ToString("F9"));
+			}
 		}
 	}
 }
