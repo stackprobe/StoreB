@@ -31,7 +31,7 @@ window.onload = function()
 
 <br/>
 
-<strong>セブンブリッジ・テスト実装</strong><br/>
+<strong>セブンブリッジ・テスト実装 @ T2</strong><br/>
 
 <br/>
 
