@@ -2,9 +2,9 @@
 	アプリケーション用メインモジュール
 */
 
-setTimeout(Main, 0);
+setTimeout(@@_Main, 0);
 
-function <void> Main()
+function <void> @@_Main()
 {
 	@@_Loading();
 }
@@ -25,10 +25,10 @@ function <void> @@_Loading()
 
 function <void> @@_Loaded()
 {
-	ProcMain(@@_Main());
+	ProcMain(@@_Main2());
 }
 
-function* <generatorForTask> @@_Main()
+function* <generatorForTask> @@_Main2()
 {
 	if (DEBUG)
 	{
@@ -39,17 +39,17 @@ function* <generatorForTask> @@_Main()
 //		yield* Test03();
 //		yield* Test04();
 //		yield* Test05();
-		yield* @@_Main2();
+		yield* @@_Main3();
 
 		// --
 	}
 	else
 	{
-		yield* @@_Main2();
+		yield* @@_Main3();
 	}
 }
 
-function* <generatorForTask> @@_Main2()
+function* <generatorForTask> @@_Main3()
 {
 	yield* EntranceMain();
 }

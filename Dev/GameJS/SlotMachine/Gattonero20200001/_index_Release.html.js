@@ -31,7 +31,7 @@ window.onload = function()
 
 <br/>
 
-<strong>スロットマシン・テスト実装</strong><br/>
+<strong>スロットマシン・テスト実装 @ T2</strong><br/>
 
 <br/>
 

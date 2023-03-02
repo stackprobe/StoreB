@@ -54,5 +54,10 @@ namespace Charlotte.Tests
 				+ " , " + (losePos * 1.0 / lose).ToString("F9")
 				);
 		}
+
+		public void Test02()
+		{
+			//
+		}
 	}
 }
