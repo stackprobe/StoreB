@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
+using Charlotte.Commons;
 
 namespace Charlotte.Utilities
 {
@@ -19,6 +21,19 @@ namespace Charlotte.Utilities
 			this.Columns = columns;
 		}
 
+		private void ResultFileToLog(string resultFile)
+		{
+#if false
+			string dbLogFile = Path.Combine(Environment.GetEnvironmentVariable("TMP"), "{4bb0d22c-61c2-4861-bc4c-feec32cd35b1}_DB_" + Process.GetCurrentProcess().Id + ".log");
+
+			using (FileStream reader = new FileStream(resultFile, FileMode.Open, FileAccess.Read))
+			using (FileStream writer = new FileStream(dbLogFile, FileMode.Append, FileAccess.Write))
+			{
+				SCommon.ReadToEnd(reader.Read, writer.Write);
+			}
+#endif
+		}
+
 		public void Create()
 		{
 			StringBuilder query = new StringBuilder();
@@ -29,7 +44,7 @@ namespace Charlotte.Utilities
 			query.Append(string.Join(" , ", this.Columns.Select(v => v.Name)));
 			query.Append(" );");
 
-			this.DB.Execute(query.ToString(), resultFile => { });
+			this.DB.Execute(query.ToString(), this.ResultFileToLog);
 		}
 
 		public void Drop()
@@ -40,7 +55,7 @@ namespace Charlotte.Utilities
 			query.Append(this.TableName);
 			query.Append(" ;");
 
-			this.DB.Execute(query.ToString(), resultFile => { });
+			this.DB.Execute(query.ToString(), this.ResultFileToLog);
 		}
 
 		public void Delete(string condition)
@@ -52,7 +67,7 @@ namespace Charlotte.Utilities
 			query.Append(" WHERE ");
 			query.Append(condition);
 
-			this.DB.Execute(query.ToString(), resultFile => { });
+			this.DB.Execute(query.ToString(), this.ResultFileToLog);
 		}
 
 		public void Insert(IEnumerable<string[]> rows)
@@ -88,13 +103,13 @@ namespace Charlotte.Utilities
 
 					if (30000000 < query.Length) // rought limit
 					{
-						this.DB.Execute(query.ToString(), resultFile => { });
+						this.DB.Execute(query.ToString(), this.ResultFileToLog);
 						query = null;
 					}
 				}
 				if (query != null)
 				{
-					this.DB.Execute(query.ToString(), resultFile => { });
+					this.DB.Execute(query.ToString(), this.ResultFileToLog);
 				}
 			}
 		}
