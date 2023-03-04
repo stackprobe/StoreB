@@ -3,6 +3,7 @@ package charlotte.commons;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -340,5 +341,54 @@ public class SCommon {
 			buff[code - codeMin] = (byte)code;
 		}
 		return SCommon.re(() -> new String(buff, CHARSET_SJIS));
+	}
+
+	public static void writeAllBytes(String file, byte[] data) {
+		try (FileOutputStream writer = new FileOutputStream(file)) {
+			writer.write(data);
+		}
+		catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void writeAllText(String file, String text, String charset) {
+		writeAllBytes(file, SCommon.re(() -> text.getBytes(charset)));
+	}
+
+	public static void writeAllLines(String file, List<String> lines, String charset) {
+		writeAllText(file, linesToText(lines), charset);
+	}
+
+	public static String linesToText(List<String> lines) {
+		return lines.size() == 0 ? "" : String.join("\r\n", lines) + "\r\n";
+	}
+
+	public static List<String> textToLines(String text) {
+		text = text.replace("\r", "");
+
+		List<String> lines = split(text, '\n');
+
+		if(1 <= lines.size() && lines.get(lines.size() - 1).isEmpty()) {
+			lines.remove(lines.size() - 1);
+		}
+		return lines;
+	}
+
+	public static List<String> split(String text, char delimiter) {
+		List<String> dest = new ArrayList<String>();
+		int start = 0;
+
+		for (; ; ) {
+			int end = text.indexOf(delimiter, start);
+
+			if (end == -1) {
+				dest.add(text.substring(start));
+				break;
+			}
+			dest.add(text.substring(start, end));
+			start = end + 1;
+		}
+		return dest;
 	}
 }

@@ -6,7 +6,8 @@ import java.util.List;
 public class Test0004 {
 	public static void main(String[] args) {
 		try {
-			test01();
+			//test01();
+			test02();
 		}
 		catch (Throwable e) {
 			e.printStackTrace();
@@ -44,6 +45,18 @@ public class Test0004 {
 				next.add(hr);
 			}
 			curr = next;
+		}
+	}
+
+	private static void test02() {
+		for (int a = -10000; a <= 10000; a++) {
+			for (int b = -10000; b <= 10000; b++) {
+				int c = 2020 - a * b;
+
+				if (a + b * c == 2021) {
+					System.out.println(a + ", " + b + ", " + c);
+				}
+			}
 		}
 	}
 }
