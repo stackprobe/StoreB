@@ -21,6 +21,15 @@ import java.util.zip.GZIPOutputStream;
  */
 public class SCommon {
 
+	public static <T> T re(ThrowableSupplier<T> routine) {
+		try {
+			return routine.get();
+		}
+		catch (Throwable e) {
+			throw new ErrorOrWarning(e);
+		}
+	}
+
 	/**
 	 * ディレクトリ内のディレクトリとファイルを検索する。
 	 * @param targetDirectory 対象ディレクトリ
@@ -271,7 +280,7 @@ public class SCommon {
 			return mem.toByteArray();
 		}
 		catch (Throwable e) {
-			throw new RuntimeException(e);
+			throw new ErrorOrWarning(e);
 		}
 	}
 
@@ -293,20 +302,7 @@ public class SCommon {
 			return writer.toByteArray();
 		}
 		catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public interface ThrowableSupplier<T> {
-		public T get() throws Exception;
-	}
-
-	public static <T> T re(ThrowableSupplier<T> routine) {
-		try {
-			return routine.get();
-		}
-		catch (Throwable e) {
-			throw new RuntimeException(e);
+			throw new ErrorOrWarning(e);
 		}
 	}
 
@@ -348,7 +344,7 @@ public class SCommon {
 			writer.write(data);
 		}
 		catch (Throwable e) {
-			throw new RuntimeException(e);
+			throw new ErrorOrWarning(e);
 		}
 	}
 
@@ -367,7 +363,7 @@ public class SCommon {
 	public static List<String> textToLines(String text) {
 		text = text.replace("\r", "");
 
-		List<String> lines = split(text, '\n');
+		List<String> lines = tokenize(text, "\n");
 
 		if(1 <= lines.size() && lines.get(lines.size() - 1).isEmpty()) {
 			lines.remove(lines.size() - 1);
@@ -375,12 +371,12 @@ public class SCommon {
 		return lines;
 	}
 
-	public static List<String> split(String text, char delimiter) {
+	public static List<String> tokenize(String text, String delimiters) {
 		List<String> dest = new ArrayList<String>();
 		int start = 0;
 
 		for (; ; ) {
-			int end = text.indexOf(delimiter, start);
+			int end = indexOfDelimiters(text, delimiters, start);
 
 			if (end == -1) {
 				dest.add(text.substring(start));
@@ -390,5 +386,18 @@ public class SCommon {
 			start = end + 1;
 		}
 		return dest;
+	}
+
+	public static int indexOfDelimiters(String str, String delimiters, int fromIndex) {
+		char[] delimiterArray = delimiters.toCharArray();
+
+		for (int index = fromIndex; index < str.length(); index++) {
+			for (char delimiter : delimiterArray) {
+				if (str.charAt(index) == delimiter) {
+					return index;
+				}
+			}
+		}
+		return -1;
 	}
 }
