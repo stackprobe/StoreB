@@ -24,9 +24,31 @@ namespace Charlotte.Tests
 
 		public void Test02()
 		{
-			//
-			//
-			//
+			string str = "++++++++++----------";
+
+			for (; ; )
+			{
+				Console.WriteLine(str);
+
+				if (!str.Contains("+-"))
+					break;
+
+				str = str.Replace("+-", "-+");
+			}
+		}
+
+		public void Test03()
+		{
+			string str = "++++++++++----------";
+
+			for (; ; )
+			{
+				Console.WriteLine(str);
+
+				//
+				//
+				//
+			}
 		}
 	}
 }
