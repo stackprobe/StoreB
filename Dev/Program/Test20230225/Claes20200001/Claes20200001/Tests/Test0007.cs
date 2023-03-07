@@ -39,15 +39,20 @@ namespace Charlotte.Tests
 
 		public void Test03()
 		{
-			string str = "++++++++++----------";
+			double a = 0.0;
+			double b = 100.0;
 
-			for (; ; )
+			for (int c = 0; c < 1000; c++)
 			{
-				Console.WriteLine(str);
+				double aToB = a * 0.01;
+				double bToA = b * 0.02;
 
-				//
-				//
-				//
+				a -= aToB;
+				b += aToB;
+				a += bToA;
+				b -= bToA;
+
+				Console.WriteLine(a.ToString("F9") + " , " + b.ToString("F9"));
 			}
 		}
 	}
