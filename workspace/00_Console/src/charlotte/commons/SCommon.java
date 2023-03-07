@@ -392,8 +392,10 @@ public class SCommon {
 		char[] delimiterArray = delimiters.toCharArray();
 
 		for (int index = fromIndex; index < str.length(); index++) {
+			char chr = str.charAt(index);
+
 			for (char delimiter : delimiterArray) {
-				if (str.charAt(index) == delimiter) {
+				if (chr == delimiter) {
 					return index;
 				}
 			}
