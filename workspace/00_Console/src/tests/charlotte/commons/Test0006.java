@@ -7,7 +7,8 @@ import java.util.stream.Collectors;
 public class Test0006 {
 	public static void main(String[] args) {
 		try {
-			test01();
+			//test01();
+			test02();
 		}
 		catch (Throwable e) {
 			e.printStackTrace();
@@ -34,5 +35,9 @@ public class Test0006 {
 		for (String str : strs) {
 			System.out.println(str);
 		}
+	}
+
+	private static void test02() {
+		System.out.println("Hello, Happy World!");
 	}
 }
