@@ -55,5 +55,10 @@ namespace Charlotte.Tests
 				Console.WriteLine(a.ToString("F9") + " , " + b.ToString("F9"));
 			}
 		}
+
+		public void Test04()
+		{
+			Console.WriteLine("Hello, Happy World!");
+		}
 	}
 }
